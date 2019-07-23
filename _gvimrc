@@ -1,6 +1,6 @@
 set guifont=IBM\ Plex\ Mono:h10
 set background=dark
-colorscheme atlas
+colorscheme blaaark
 
 syntax on
 filetype plugin indent on

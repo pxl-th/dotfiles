@@ -3,10 +3,14 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_color_change_percent = 10
 let g:indent_guides_enable_on_vim_startup = 1
 let s:grep_available=0
-let g:NERDTreeWinSize = 50
+let g:NERDTreeWinSize = 40
 
 let g:jedi#goto_assignments_command = "<leader>g"
 let g:jedi#goto_definitions_command = "<leader>d"
+
+let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
+let g:airline_detect_spell=0
+let g:airline_theme='minimalist'
 
 " ale linter configuration
 let g:ale_linters = {}
@@ -16,6 +20,8 @@ let g:ale_linters = {}
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " Reset search highlight
 nnoremap <F4> :noh<CR>
+" F8 to view file structure
+nnoremap <F8> :TagbarToggle<CR>
 
 " New commands
 " Remove trailing whitespaces
@@ -37,8 +43,6 @@ set spell
 " Display completion matches
 set wildmenu
 " Set status line display
-set laststatus=2
-set statusline=%F%m%r%h%w\ [format=%{&ff}]\ [type=%Y]\ [position=%l,%v][%p%%]\ [buffer=%n]\ %{strftime('%c')}
 set colorcolumn=80
 
 " Allow regular usage of backspace
@@ -86,11 +90,17 @@ Plug 'tpope/vim-commentary'
 Plug 'nathanaelkane/vim-indent-guides'
 " Python autocompletion
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
+" View file structure
+Plug 'https://github.com/majutsushi/tagbar.git'
 " Linting
 Plug 'w0rp/ale'
+" Pretty status bar
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Git integration
+Plug 'https://github.com/tpope/vim-fugitive.git'
 " Themes
-"Plug 'https://github.com/davidosomething/vim-colors-meh.git'
-Plug 'huyvohcmc/atlas.vim'
+Plug 'https://github.com/neutaaaaan/blaaark.git'
 
 call plug#end()
 
