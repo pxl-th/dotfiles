@@ -1,0 +1,16 @@
+set guifont=IBM\ Plex\ Mono:h10
+set background=dark
+colorscheme atlas
+
+syntax on
+filetype plugin indent on
+
+winpos 200 100
+set lines=50 columns=200
+set vb t_vb=
+
+set guioptions-=T  "remove toolbar
+set guioptions-=m  "remove menubar
+set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=L  "remove left-hand scroll bar
+
