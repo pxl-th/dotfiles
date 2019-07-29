@@ -12,6 +12,14 @@ let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
 let g:airline_theme='minimalist'
 
+" Configure snippets commands
+let g:UltiSnipsSnippetDirectories = ["C:/Users/tonys/vimfiles/custom-snippets"]
+let g:UltiSnipsSnippetsDir = "C:/Users/tonys/vimfiles/custom-snippets"
+let g:UltiSnipsExpandTrigger="<C-s>"
+let g:UltiSnipsJumpForwardTrigger="<C-a>"
+let g:UltiSnipsJumpBackwardTrigger="<C-b>"
+let g:UltiSnipsEditSplit="vertical"
+
 " ale linter configuration
 let g:ale_linters = {}
 :call extend(g:ale_linters, {'python': ['flake8'], })
@@ -72,7 +80,7 @@ syntax on
 filetype plugin indent on
 
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 
 
@@ -101,6 +109,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 " Themes
 Plug 'https://github.com/neutaaaaan/blaaark.git'
+" Snippets
+Plug 'SirVer/ultisnips', {'for': 'python'}
+Plug 'honza/vim-snippets', {'for': 'python'}
 
 call plug#end()
 
