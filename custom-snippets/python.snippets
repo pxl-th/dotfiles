@@ -12,6 +12,12 @@ snippet main "if name is main" b
 if __name__ == "__main__":
 endsnippet
 
+snippet all "__all__ variable" b
+__all__ = [
+    ${1}
+]
+endsnippet
+
 
 snippet defe "function without docstring" b:
 def ${1:name}():

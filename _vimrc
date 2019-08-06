@@ -10,7 +10,7 @@ let g:jedi#goto_definitions_command = "<leader>d"
 
 let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
-let g:airline_theme='minimalist'
+let g:airline_theme='snow_dark'
 
 " Configure snippets commands
 let g:UltiSnipsSnippetDirectories = ["C:/Users/tonys/vimfiles/custom-snippets"]
@@ -47,7 +47,7 @@ set number
 set cursorline
 set nowrap
 set showmatch
-set spell
+set nospell
 " Display completion matches
 set wildmenu
 " Set status line display
@@ -108,7 +108,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Git integration
 Plug 'https://github.com/tpope/vim-fugitive.git'
 " Themes
-Plug 'https://github.com/neutaaaaan/blaaark.git'
+Plug 'https://github.com/nightsense/snow.git'
 " Snippets
 Plug 'SirVer/ultisnips', {'for': 'python'}
 Plug 'honza/vim-snippets', {'for': 'python'}

@@ -1,6 +1,6 @@
 set guifont=IBM\ Plex\ Mono:h10
 set background=dark
-colorscheme blaaark
+colorscheme snow
 
 syntax on
 filetype plugin indent on
@@ -13,4 +13,3 @@ set guioptions-=T  "remove toolbar
 set guioptions-=m  "remove menubar
 set guioptions-=r  "remove right-hand scroll bar
 set guioptions-=L  "remove left-hand scroll bar
-
