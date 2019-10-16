@@ -1,6 +1,10 @@
-set guifont=IBM\ Plex\ Mono:h10
+"set guifont=IBM\ Plex\ Mono:h10
+"set guifont=IBM\ 3270\ Narrow:h12
+set guifont=Fira\ Code\ Regular:h10
+" set renderoptions=type:directx
 set background=dark
-colorscheme snow
+colorscheme base16-default-dark
+"colorscheme base16-oceanicnext
 
 syntax on
 filetype plugin indent on
