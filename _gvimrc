@@ -1,15 +1,11 @@
-"set guifont=IBM\ Plex\ Mono:h10
-"set guifont=IBM\ 3270\ Narrow:h12
-set guifont=Fira\ Code\ Regular:h10
+" set guifont=Cascadia\ Code:h10
+set guifont=Consolas:h11
 " set renderoptions=type:directx
 set background=dark
 colorscheme base16-default-dark
 "colorscheme base16-oceanicnext
 
-syntax on
-filetype plugin indent on
-
-winpos 200 100
+winpos 200 80
 set lines=50 columns=200
 set vb t_vb=
 

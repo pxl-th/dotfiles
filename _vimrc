@@ -1,4 +1,24 @@
-set updatetime=100
+call plug#begin('C:\Users\tonys\vimfiles\pluggins') " Load plugins
+
+Plug 'scrooloose/nerdtree' " File browser
+Plug 'airblade/vim-gitgutter' " Show git modifications
+Plug 'tpope/vim-commentary' " Comment plugin
+Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
+Plug 'majutsushi/tagbar' " View file structure
+Plug 'vim-airline/vim-airline' " Pretty status bar
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive' " Git integration
+Plug 'chriskempson/base16-vim' " Themes
+
+Plug 'w0rp/ale', {'for': ['python']} " Linting
+Plug 'davidhalter/jedi-vim', {'for': 'python'} " Autocompletion
+Plug 'ycm-core/YouCompleteMe', {'for': 'cpp'}
+Plug 'SirVer/ultisnips', {'for': ['python', 'cpp']} " Snippets
+Plug 'honza/vim-snippets', {'for': ['python', 'cpp']}
+
+call plug#end()
+
+set updatetime=750
 set backupdir=C:\Users\tonys\vimfiles\backup
 set encoding=utf-8
 set fileencoding=utf-8
@@ -21,6 +41,8 @@ set scrolloff=5
 syntax on
 filetype plugin indent on
 
+set vb t_vb=
+
 if has("autocmd")
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
@@ -33,8 +55,11 @@ set autoindent
 set smarttab
 set smartindent
 
+
 autocmd Filetype haskell setlocal ts=2 sw=2 st=2
 autocmd Filetype vim setlocal ts=2 sw=2 st=2
+autocmd Filetype tex setlocal ts=2 sw=2 st=2
+autocmd Filetype plaintex setlocal ts=2 sw=2 st=2
 
 " Highlight search results and start searching on typing
 set incsearch
@@ -70,8 +95,7 @@ let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
 " ale linter configuration
-let g:ale_linters = {}
-:call extend(g:ale_linters, {'python': ['flake8'], })
+let g:ale_linters = {'python': ['flake8']}
 
 " F3 to open file browser
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
@@ -82,22 +106,3 @@ nnoremap <F8> :TagbarToggle<CR>
 
 " New commands
 command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
-
-
-call plug#begin('C:\Users\tonys\vimfiles\pluggins') " Load plugins
-
-Plug 'scrooloose/nerdtree' " File browser
-Plug 'airblade/vim-gitgutter' " Show git modifications
-Plug 'tpope/vim-commentary' " Comment plugin
-Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
-Plug 'davidhalter/jedi-vim', {'for': 'python'} " Autocompletion
-Plug 'https://github.com/majutsushi/tagbar.git' " View file structure
-Plug 'w0rp/ale' " Linting
-Plug 'vim-airline/vim-airline' " Pretty status bar
-Plug 'vim-airline/vim-airline-themes'
-Plug 'https://github.com/tpope/vim-fugitive.git' " Git integration
-Plug 'https://github.com/chriskempson/base16-vim.git' " Themes
-Plug 'SirVer/ultisnips', {'for': 'python'} " Snippets
-Plug 'honza/vim-snippets', {'for': 'python'}
-
-call plug#end()
