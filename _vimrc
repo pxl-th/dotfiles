@@ -2,13 +2,13 @@ call plug#begin('C:\Users\tonys\vimfiles\pluggins') " Load plugins
 
 Plug 'scrooloose/nerdtree' " File browser
 Plug 'airblade/vim-gitgutter' " Show git modifications
-Plug 'tpope/vim-commentary' " Comment plugin
+Plug 'tpope/vim-commentary' " Comment-stuff-out plugin
 Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
 Plug 'majutsushi/tagbar' " View file structure
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
-Plug 'chriskempson/base16-vim' " Themes
+Plug 'levelone/tequila-sunrise.vim'
 
 Plug 'w0rp/ale', {'for': ['python']} " Linting
 Plug 'davidhalter/jedi-vim', {'for': 'python'} " Autocompletion
@@ -65,11 +65,12 @@ autocmd Filetype plaintex setlocal ts=2 sw=2 st=2
 set incsearch
 set hlsearch
 
-set foldmethod=syntax
+set foldmethod=indent
 set nofoldenable
 set foldnestmax=10
 set foldlevel=2
 nnoremap <space> za
+vnoremap <space> zf
 
 
 " Plugins configurations
@@ -84,7 +85,7 @@ let g:jedi#goto_definitions_command = "<leader>d"
 
 let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
-let g:airline_theme='distinguished'
+let g:airline_theme='minimalist'
 
 " Configure snippets commands
 let g:UltiSnipsSnippetDirectories = ["C:/Users/tonys/vimfiles/custom-snippets"]
@@ -93,6 +94,8 @@ let g:UltiSnipsExpandTrigger="<C-s>"
 let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
+
+let g:ycm_max_num_candidates = 20
 
 " ale linter configuration
 let g:ale_linters = {'python': ['flake8']}

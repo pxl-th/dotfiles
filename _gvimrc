@@ -1,15 +1,14 @@
-" set guifont=Cascadia\ Code:h10
-set guifont=Consolas:h11
 " set renderoptions=type:directx
+set guifont=IBM\ Plex\ Mono:h10.5
 set background=dark
-colorscheme base16-default-dark
-"colorscheme base16-oceanicnext
+colorscheme tequila-sunrise
 
-winpos 200 80
-set lines=50 columns=200
+winpos 100 80
+set lines=35 columns=160
 set vb t_vb=
 
 set guioptions-=T  "remove toolbar
 set guioptions-=m  "remove menubar
 set guioptions-=r  "remove right-hand scroll bar
 set guioptions-=L  "remove left-hand scroll bar
+set guicursor+=a:blinkon0  " remove cursor blinking
