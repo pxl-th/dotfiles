@@ -1,5 +1,6 @@
 " set renderoptions=type:directx
-set guifont=IBM\ Plex\ Mono:h10.5
+" set guifont=IBM\ Plex\ Mono:h10.5
+set guifont=Consolas:h11
 set background=dark
 colorscheme tequila-sunrise
 
