@@ -1,10 +1,14 @@
-call plug#begin('C:\Users\tonys\vimfiles\pluggins') " Load plugins
+set backupdir=C:\Users\tonys\vimfiles\backup
+let g:snippets_dir = "C:/Users/tonys/vimfiles/custom-snippets"
+let g:pluggins_dir = "C:/Users/tonys/vimfiles/pluggins"
+
+call plug#begin(g:pluggins_dir) " Load plugins
 
 Plug 'scrooloose/nerdtree' " File browser
 Plug 'airblade/vim-gitgutter' " Show git modifications
 Plug 'tpope/vim-commentary' " Comment-stuff-out plugin
 Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
-Plug 'majutsushi/tagbar' " View file structure
+Plug 'majutsushi/tagbar', {'for': 'python'} " View file structure
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
@@ -24,7 +28,6 @@ Plug 'honza/vim-snippets', {'for': ['python', 'cpp']}
 
 call plug#end()
 
-set backupdir=C:\Users\tonys\vimfiles\backup
 set completeopt=longest,menuone
 set fileencoding=utf-8
 set encoding=utf-8
@@ -91,18 +94,26 @@ let g:airline_detect_spell=0
 let g:airline_theme='minimalist'
 
 " Configure snippets commands
-let g:UltiSnipsSnippetDirectories = ["C:/Users/tonys/vimfiles/custom-snippets"]
-let g:UltiSnipsSnippetsDir = "C:/Users/tonys/vimfiles/custom-snippets"
+let g:UltiSnipsSnippetDirectories = [g:snippets_dir]
+let g:UltiSnipsSnippetsDir = g:snippets_dir
 let g:UltiSnipsExpandTrigger="<C-s>"
 let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
+let g:asyncomplete_auto_popup = 0
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
-" let g:lsp_log_verbose = 1
-" let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
+
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+nnoremap <F6> :LspRename<CR>
+nnoremap <F7> :LspDefinition<CR>
+nnoremap <F8> :LspDocumentDiagnostics<CR>
+nnoremap <F9> :LspStatus<CR>
+
 if executable('julia')
   let g:julia_lsp = '
   \ using LanguageServer;
@@ -120,13 +131,6 @@ if executable('julia')
   \ 'whitelist': ['julia'],
   \ })
 endif
-
-nnoremap <F6> :LspRename<CR>
-nnoremap <F9> :LspStatus<CR>
-nnoremap P :LspDefinition<CR>
-
-let g:asyncomplete_auto_popup = 0
-imap <c-space> <Plug>(asyncomplete_force_refresh)
 
 " F3 to open file browser
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
