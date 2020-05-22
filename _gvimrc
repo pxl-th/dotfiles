@@ -1,12 +1,12 @@
-" set renderoptions=type:directx
-" set guifont=IBM\ Plex\ Mono:h10.5
-set guifont=Consolas:h11
+GuiFont UbuntuMono_NF:h12
+GuiPopupmenu 0
+
 set background=dark
 colorscheme tequila-sunrise
 
-winpos 100 80
 set lines=35 columns=160
 set vb t_vb=
+set mouse=a " Enable selection using mouse
 
 set guioptions-=T  "remove toolbar
 set guioptions-=m  "remove menubar

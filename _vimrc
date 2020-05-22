@@ -12,17 +12,18 @@ Plug 'majutsushi/tagbar', {'for': 'python'} " View file structure
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
-
-Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'} " Julia lang support
+Plug 'levelone/tequila-sunrise.vim' " Theme
+" Julia
+Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 Plug 'prabirshrestha/async.vim', {'for': 'julia'}
 Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
 Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
 Plug 'prabirshrestha/vim-lsp', {'for': 'julia'}
-
-Plug 'levelone/tequila-sunrise.vim' " Theme
-
+" Python
 Plug 'w0rp/ale', {'for': 'python'} " Linting
 Plug 'davidhalter/jedi-vim', {'for': 'python'} " Autocompletion
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins', 'for': 'python'}
+Plug 'zchee/deoplete-jedi', {'for': 'python'}
 Plug 'SirVer/ultisnips', {'for': ['python', 'cpp']} " Snippets
 Plug 'honza/vim-snippets', {'for': ['python', 'cpp']}
 
@@ -74,9 +75,9 @@ set foldlevel=2
 nnoremap <space> za
 vnoremap <space> zf
 
-autocmd Filetype vim setlocal ts=2 sw=2 st=2
-autocmd Filetype tex setlocal ts=2 sw=2 st=2
-autocmd Filetype plaintex setlocal ts=2 sw=2 st=2
+autocmd Filetype vim setlocal ts=2 sw=2
+autocmd Filetype tex setlocal ts=2 sw=2
+autocmd Filetype plaintex setlocal ts=2 sw=2
 
 " Plugins configurations
 let g:indent_guides_guide_size = 1
@@ -86,8 +87,10 @@ let s:grep_available=0
 let g:NERDTreeWinSize = 40
 
 let g:ale_linters = {'python': ['flake8']}
+let g:jedi#completions_enabled = 0  " Using deoplete instead
 let g:jedi#goto_assignments_command = "<leader>g"
 let g:jedi#goto_definitions_command = "<leader>d"
+let g:deoplete#enable_at_startup = 1
 
 let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
@@ -105,38 +108,49 @@ let g:asyncomplete_auto_popup = 0
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_log_verbose = 1
-let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
+" let g:lsp_log_verbose = 1
+" let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
 
-imap <c-space> <Plug>(asyncomplete_force_refresh)
-nnoremap <F6> :LspRename<CR>
-nnoremap <F7> :LspDefinition<CR>
-nnoremap <F8> :LspDocumentDiagnostics<CR>
-nnoremap <F9> :LspStatus<CR>
+" imap <c-space> <Plug>(asyncomplete_force_refresh)
+" nnoremap <F6> :LspRename<CR>
+" nnoremap <F7> :LspDefinition<CR>
+" nnoremap <F8> :LspDocumentDiagnostics<CR>
+" nnoremap <F9> :LspStatus<CR>
 
-if executable('julia')
-  let g:julia_lsp = '
-  \ using LanguageServer;
-  \ using Pkg;
-  \ import StaticLint;
-  \ import SymbolServer;
-  \ env_path = dirname(Pkg.Types.Context().env.project_file);
-  \ server = LanguageServer.LanguageServerInstance(stdin, stdout, env_path);
-  \ server.runlinter = true;
-  \ run(server);
-  \'
-  autocmd User lsp_setup call lsp#register_server({
-  \ 'name': 'julia',
-  \ 'cmd': {server_info->['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp]},
-  \ 'whitelist': ['julia'],
-  \ })
-endif
+" if executable('julia')
+"   let g:julia_lsp = '
+"   \ using LanguageServer;
+"   \ using Pkg;
+"   \ import StaticLint;
+"   \ import SymbolServer;
+"   \ env_path = dirname(Pkg.Types.Context().env.project_file);
+"   \ server = LanguageServer.LanguageServerInstance(stdin, stdout, env_path);
+"   \ server.runlinter = true;
+"   \ run(server);
+"   \'
+"   autocmd User lsp_setup call lsp#register_server({
+"   \ 'name': 'julia',
+"   \ 'cmd': {server_info->['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp]},
+"   \ 'whitelist': ['julia'],
+"   \ })
+" endif
 
 " F3 to open file browser
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " Reset search highlight
 nnoremap <F4> :noh<CR>
 " F8 to view file structure
-nnoremap <F8> :TagbarToggle<CR>
+" nnoremap <F8> :TagbarToggle<CR>
 
 command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
+
+" SHIFT-Del are Cut
+vnoremap <S-Del> "+x
+" CTRL-Insert are Copy
+vnoremap <C-Insert> "+y
+" SHIFT-Insert are Paste
+map <S-Insert> "+gP
+cmap <S-Insert> <C-R>+
+imap <S-Insert> <C-R>+
+vmap <S-Insert> <C-R>+
+cmap <S-Insert> <C-R>+
