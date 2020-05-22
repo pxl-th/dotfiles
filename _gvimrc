@@ -1,4 +1,4 @@
-GuiFont UbuntuMono_NF:h12
+GuiFont UbuntuMono\ NF:h12
 GuiPopupmenu 0
 
 set background=dark

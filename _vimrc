@@ -88,6 +88,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 let s:grep_available=0
 let g:NERDTreeWinSize = 40
 
+let g:python3_host_prog = expand("~/projects/python/nvim-venv/Scripts/python.exe")
 let g:ale_linters = {'python': ['flake8']}
 let g:jedi#completions_enabled = 0  " Using deoplete instead
 let g:jedi#goto_assignments_command = "<leader>g"
