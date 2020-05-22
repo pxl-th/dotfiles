@@ -35,4 +35,5 @@ Make sure that everything installs correctly.
 - Activate `nvim-venv/Scripts/activate.ps1`
 - Install `pip install pynvim jedi flake8`
 - In `_vimrc` file modify `g:python3_host_prog` variable to point to `python.exe` in `nvim-venv`
+
 Done.
