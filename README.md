@@ -6,7 +6,7 @@ Create `~/vimfiles` directory and make sure it contains
 `backup` and `swap` directories.
 
 - [Download](https://github.com/junegunn/vim-plug/blob/master/plug.vim)
-plugin manager and save it in `~/autoload` directory.
+plugin manager and save it in `~/vimfiles/autoload` directory.
 
 - If you want, copy `custom-snippets` directory to `~/vimfiles`
 to add custom snippets.
