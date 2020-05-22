@@ -1,6 +1,8 @@
-set backupdir=C:\Users\tonys\vimfiles\backup
-let g:snippets_dir = "C:/Users/tonys/vimfiles/custom-snippets"
-let g:pluggins_dir = "C:/Users/tonys/vimfiles/pluggins"
+set backup
+let &backupdir = expand("~/vimfiles/backup")
+let &directory = expand('~/vimfiles/swap//')
+let g:snippets_dir = expand("~/vimfiles/custom-snippets")
+let g:pluggins_dir = expand("~/vimfiles/pluggins")
 
 call plug#begin(g:pluggins_dir) " Load plugins
 
