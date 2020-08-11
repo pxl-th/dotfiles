@@ -1,0 +1,39 @@
+snippet struct "struct" b
+struct ${1:}
+
+end
+endsnippet
+
+snippet com "multiline comment" i
+"""
+${1:}
+"""
+endsnippet
+
+snippet fori "for in" i
+for ${1:i} in ${2:}
+
+end
+endsnippet
+
+snippet forc "[i for in]" i
+[$1 for ${1:i} in ${2:}]
+endsnippet
+
+snippet if "if" i
+if ${1:}
+
+end
+endsnippet
+
+snippet ifelse "if else" i
+if ${1:}
+
+else
+
+end
+endsnippet
+
+snippet inc "include" b
+include("${1:}.jl")
+endsnippet

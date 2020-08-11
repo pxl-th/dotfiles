@@ -15,18 +15,20 @@ Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
 Plug 'levelone/tequila-sunrise.vim' " Theme
+
+Plug 'tikhomirov/vim-glsl', {'for': 'glsl'} " GLSL syntax highlighting
 " Julia
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
-Plug 'prabirshrestha/async.vim', {'for': 'julia'}
-Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
-Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
-Plug 'prabirshrestha/vim-lsp', {'for': 'julia'}
+" Plug 'prabirshrestha/async.vim', {'for': 'julia'}
+" Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
+" Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
+" Plug 'prabirshrestha/vim-lsp', {'for': 'julia'}
 " Python
 Plug 'w0rp/ale', {'for': 'python'} " Linting
 Plug 'davidhalter/jedi-vim', {'for': 'python'} " Autocompletion
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins', 'for': 'python'}
 Plug 'zchee/deoplete-jedi', {'for': 'python'}
-Plug 'SirVer/ultisnips', {'for': ['python', 'cpp']} " Snippets
+Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']} " Snippets
 Plug 'honza/vim-snippets', {'for': ['python', 'cpp']}
 
 call plug#end()
@@ -93,6 +95,7 @@ let g:ale_linters = {'python': ['flake8']}
 let g:jedi#completions_enabled = 0  " Using deoplete instead
 let g:jedi#goto_assignments_command = "<leader>g"
 let g:jedi#goto_definitions_command = "<leader>d"
+let g:jedi#popup_select_first = 0
 let g:deoplete#enable_at_startup = 1
 
 let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
@@ -107,10 +110,10 @@ let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-let g:asyncomplete_auto_popup = 0
-let g:lsp_diagnostics_enabled = 1
-let g:lsp_signs_enabled = 1
-let g:lsp_diagnostics_echo_cursor = 1
+" let g:asyncomplete_auto_popup = 0
+" let g:lsp_diagnostics_enabled = 1
+" let g:lsp_signs_enabled = 1
+" let g:lsp_diagnostics_echo_cursor = 1
 " let g:lsp_log_verbose = 1
 " let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
 
@@ -131,9 +134,12 @@ let g:lsp_diagnostics_echo_cursor = 1
 "   \ server.runlinter = true;
 "   \ run(server);
 "   \'
+"   let g:julia_lsp = 'using LanguageServer, LanguageServer.SymbolServer; runserver()'
+"   let g:julia_env = fnamemodify(getcwd(), ":h")
+"   echo g:julia_env
 "   autocmd User lsp_setup call lsp#register_server({
 "   \ 'name': 'julia',
-"   \ 'cmd': {server_info->['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp]},
+"   \ 'cmd': { server_info -> ['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp, g:julia_env] },
 "   \ 'whitelist': ['julia'],
 "   \ })
 " endif
@@ -153,7 +159,5 @@ vnoremap <S-Del> "+x
 vnoremap <C-Insert> "+y
 " SHIFT-Insert are Paste
 map <S-Insert> "+gP
-cmap <S-Insert> <C-R>+
-imap <S-Insert> <C-R>+
-vmap <S-Insert> <C-R>+
-cmap <S-Insert> <C-R>+
+inoremap <S-Insert> <C-R><C-O>+
+vnoremap <S-Insert> <C-R>+
