@@ -1,6 +1,10 @@
-# nvimconf
+# dotfiles
 
-## Installation
+Collection of my dotfiles.
+
+## NVim dotfiles
+
+### Installation
 - Place config files in `~` directory.
 Create `~/vimfiles` directory and make sure it contains
 `backup` and `swap` directories.
@@ -30,7 +34,7 @@ Make sure that everything installs correctly.
 
 - Reload, done.
 
-## Python support:
+### Python support:
 - Create common venv for nvim python plugins `virtualenv nvim-venv`
 - Activate `nvim-venv/Scripts/activate.ps1`
 - Install `pip install pynvim jedi flake8`
