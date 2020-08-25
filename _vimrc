@@ -19,10 +19,10 @@ Plug 'levelone/tequila-sunrise.vim' " Theme
 Plug 'tikhomirov/vim-glsl', {'for': 'glsl'} " GLSL syntax highlighting
 " Julia
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
-" Plug 'prabirshrestha/async.vim', {'for': 'julia'}
-" Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
-" Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
-" Plug 'prabirshrestha/vim-lsp', {'for': 'julia'}
+Plug 'prabirshrestha/async.vim', {'for': 'julia'}
+Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
+Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
+Plug 'prabirshrestha/vim-lsp', {'for': 'julia'}
 " Python
 Plug 'w0rp/ale', {'for': 'python'} " Linting
 Plug 'davidhalter/jedi-vim', {'for': 'python'} " Autocompletion
@@ -110,9 +110,10 @@ let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-" let g:asyncomplete_auto_popup = 0
+" let g:asyncomplete_auto_popup = 1
 " let g:lsp_diagnostics_enabled = 1
 " let g:lsp_signs_enabled = 1
+" let g:lsp_virtual_text_enabled = 0 " Disable virtual text
 " let g:lsp_diagnostics_echo_cursor = 1
 " let g:lsp_log_verbose = 1
 " let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
@@ -124,22 +125,10 @@ let g:UltiSnipsEditSplit="vertical"
 " nnoremap <F9> :LspStatus<CR>
 
 " if executable('julia')
-"   let g:julia_lsp = '
-"   \ using LanguageServer;
-"   \ using Pkg;
-"   \ import StaticLint;
-"   \ import SymbolServer;
-"   \ env_path = dirname(Pkg.Types.Context().env.project_file);
-"   \ server = LanguageServer.LanguageServerInstance(stdin, stdout, env_path);
-"   \ server.runlinter = true;
-"   \ run(server);
-"   \'
 "   let g:julia_lsp = 'using LanguageServer, LanguageServer.SymbolServer; runserver()'
-"   let g:julia_env = fnamemodify(getcwd(), ":h")
-"   echo g:julia_env
 "   autocmd User lsp_setup call lsp#register_server({
 "   \ 'name': 'julia',
-"   \ 'cmd': { server_info -> ['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp, g:julia_env] },
+"   \ 'cmd': { server_info -> ['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp] },
 "   \ 'whitelist': ['julia'],
 "   \ })
 " endif
@@ -161,3 +150,6 @@ vnoremap <C-Insert> "+y
 map <S-Insert> "+gP
 inoremap <S-Insert> <C-R><C-O>+
 vnoremap <S-Insert> <C-R>+
+
+nnoremap <C-Tab> gt
+nnoremap <C-S-Tab> gT
