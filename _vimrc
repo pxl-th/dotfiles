@@ -17,6 +17,8 @@ Plug 'tpope/vim-fugitive' " Git integration
 Plug 'levelone/tequila-sunrise.vim' " Theme
 
 Plug 'tikhomirov/vim-glsl', {'for': 'glsl'} " GLSL syntax highlighting
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 " Julia
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 Plug 'prabirshrestha/async.vim', {'for': 'julia'}
@@ -28,6 +30,7 @@ Plug 'w0rp/ale', {'for': 'python'} " Linting
 Plug 'davidhalter/jedi-vim', {'for': 'python'} " Autocompletion
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins', 'for': 'python'}
 Plug 'zchee/deoplete-jedi', {'for': 'python'}
+
 Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']} " Snippets
 Plug 'honza/vim-snippets', {'for': ['python', 'cpp']}
 
@@ -102,7 +105,13 @@ let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
 let g:airline_theme='minimalist'
 
-" Configure snippets commands
+" Markdown config.
+let g:vim_markdown_conceal = 1
+let g:vim_markdown_conceal_code_blocks = 1
+autocmd FileType markdown.lsp-hover
+  \ nmap <silent><buffer>q :pclose<CR>| doautocmd <nomodeline> BufWinEnter
+
+" Configure snippets commands.
 let g:UltiSnipsSnippetDirectories = [g:snippets_dir]
 let g:UltiSnipsSnippetsDir = g:snippets_dir
 let g:UltiSnipsExpandTrigger="<C-s>"
@@ -110,35 +119,36 @@ let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-" let g:asyncomplete_auto_popup = 1
-" let g:lsp_diagnostics_enabled = 1
-" let g:lsp_signs_enabled = 1
-" let g:lsp_virtual_text_enabled = 0 " Disable virtual text
-" let g:lsp_diagnostics_echo_cursor = 1
+let g:asyncomplete_auto_popup = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_signs_enabled = 1
+let g:lsp_preview_max_width = 79
 " let g:lsp_log_verbose = 1
 " let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
 
-" imap <c-space> <Plug>(asyncomplete_force_refresh)
-" nnoremap <F6> :LspRename<CR>
-" nnoremap <F7> :LspDefinition<CR>
-" nnoremap <F8> :LspDocumentDiagnostics<CR>
-" nnoremap <F9> :LspStatus<CR>
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+nnoremap <F6> :LspRename<CR>
+nnoremap <F7> :LspDefinition<CR>
+nnoremap <F8> :LspDocumentDiagnostics<CR>
+nnoremap <F9> :LspStatus<CR>
 
-" if executable('julia')
-"   let g:julia_lsp = 'using LanguageServer, LanguageServer.SymbolServer; runserver()'
-"   autocmd User lsp_setup call lsp#register_server({
-"   \ 'name': 'julia',
-"   \ 'cmd': { server_info -> ['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp] },
-"   \ 'whitelist': ['julia'],
-"   \ })
-" endif
+if executable('julia')
+  let g:julia_lsp = 'using LanguageServer, LanguageServer.SymbolServer; runserver()'
+  autocmd User lsp_setup call lsp#register_server({
+  \ 'name': 'julia',
+  \ 'cmd': { server_info -> ['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp] },
+  \ 'whitelist': ['julia'],
+  \ })
+endif
 
 " F3 to open file browser
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " Reset search highlight
 nnoremap <F4> :noh<CR>
 " F8 to view file structure
-" nnoremap <F8> :TagbarToggle<CR>
+nnoremap <F5> :TagbarToggle<CR>
 
 command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
 
