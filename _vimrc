@@ -10,17 +10,19 @@ Plug 'scrooloose/nerdtree' " File browser
 Plug 'airblade/vim-gitgutter' " Show git modifications
 Plug 'tpope/vim-commentary' " Comment-stuff-out plugin
 Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
-Plug 'majutsushi/tagbar', {'for': 'python'} " View file structure
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
 Plug 'levelone/tequila-sunrise.vim' " Theme
+Plug 'dstein64/vim-startuptime'
 
 Plug 'tikhomirov/vim-glsl', {'for': 'glsl'} " GLSL syntax highlighting
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+
 " Julia
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
+" Plug 'neovim/nvim-lspconfig'
 Plug 'prabirshrestha/async.vim', {'for': 'julia'}
 Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
 Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
@@ -56,11 +58,11 @@ set scrolloff=5
 set list
 
 syntax on
-filetype plugin indent on
+filetype plugin on
 set vb t_vb=
 
 if has("autocmd")
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 
 set tabstop=4
@@ -119,6 +121,8 @@ let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
+let g:latex_to_unicode_tab = 0
+
 let g:asyncomplete_auto_popup = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_enabled = 1
@@ -143,6 +147,46 @@ if executable('julia')
   \ })
 endif
 
+" Beta native LSP (crashes server for now)
+" lua << EOF
+"   require 'lspconfig'.julials.setup{}
+" EOF
+
+"lua << EOF
+"  local lspconfig = require 'lspconfig'
+"  local configs = require 'lspconfig/configs'
+"  local util = require 'lspconfig/util'
+
+"  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+"    vim.lsp.diagnostic.on_publish_diagnostics, {
+"      underline = false,
+"      virtual_text = false,
+"      signs = true,
+"      update_in_insert = false,
+"    }
+"  )
+
+"  configs.julia_lsp = {
+"    default_config = {
+"      cmd = {
+"        "julia", "--startup-file=no", "--history-file=no", "-e", [[
+"          using LanguageServer, LanguageServer.SymbolServer; runserver()
+"        ]]
+"      };
+"      filetypes = {'julia'};
+"      root_dir = function(fname)
+"        return util.find_git_ancestor(fname) or vim.loop.os_homedir()
+"      end;
+"    };
+"  }
+
+"  lspconfig.julia_lsp.setup{}
+"EOF
+
+"if has("nvim-0.5")
+"  autocmd Filetype julia setlocal omnifunc=v:lua.vim.lsp.omnifunc
+"end
+
 " F3 to open file browser
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " Reset search highlight
@@ -160,6 +204,6 @@ vnoremap <C-Insert> "+y
 map <S-Insert> "+gP
 inoremap <S-Insert> <C-R><C-O>+
 vnoremap <S-Insert> <C-R>+
-
+" Next/prev tab
 nnoremap <C-Tab> gt
 nnoremap <C-S-Tab> gT
