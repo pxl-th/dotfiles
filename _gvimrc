@@ -1,8 +1,4 @@
-" GuiFont! Consolas:h11
-" GuiFont! ProggyCleanTT\ NF:h12
-" GuiFont! basis33:h12
-GuiFont! JuliaMono:h8
-" GuiFont UbuntuMono\ NF:h12
+GuiFont! JuliaMono:h9
 GuiPopupmenu 0
 set title " show filename in window title
 

@@ -23,6 +23,7 @@ Plug 'plasticboy/vim-markdown'
 " Julia
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 " Plug 'neovim/nvim-lspconfig'
+" Plug 'nvim-lua/completion-nvim'
 Plug 'prabirshrestha/async.vim', {'for': 'julia'}
 Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
 Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
@@ -121,7 +122,9 @@ let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-let g:latex_to_unicode_tab = 0
+" Julia stuff.
+" let g:latex_to_unicode_tab = 0
+let g:julia_indent_align_brackets = 0
 
 let g:asyncomplete_auto_popup = 1
 let g:lsp_diagnostics_echo_cursor = 1
@@ -129,8 +132,8 @@ let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_signs_enabled = 1
 let g:lsp_preview_max_width = 79
-" let g:lsp_log_verbose = 1
-" let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
 
 imap <c-space> <Plug>(asyncomplete_force_refresh)
 nnoremap <F6> :LspRename<CR>
@@ -148,9 +151,10 @@ if executable('julia')
 endif
 
 " Beta native LSP (crashes server for now)
-" lua << EOF
-"   require 'lspconfig'.julials.setup{}
-" EOF
+" Print logfile
+" :lua print(vim.lsp.get_log_path())
+" Print current omnifunc
+" :set omnifunc?
 
 "lua << EOF
 "  local lspconfig = require 'lspconfig'
@@ -180,8 +184,10 @@ endif
 "    };
 "  }
 
-"  lspconfig.julia_lsp.setup{}
+"  lspconfig.julia_lsp.setup{on_attach=require'completion'.on_attach}
 "EOF
+
+"nnoremap <F9> <cmd>lua print(vim.lsp.buf.server_ready())<CR>
 
 "if has("nvim-0.5")
 "  autocmd Filetype julia setlocal omnifunc=v:lua.vim.lsp.omnifunc
