@@ -13,12 +13,8 @@ Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
-Plug 'levelone/tequila-sunrise.vim' " Theme
 Plug 'dstein64/vim-startuptime'
-
-Plug 'tikhomirov/vim-glsl', {'for': 'glsl'} " GLSL syntax highlighting
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
 
 " Julia
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
@@ -35,7 +31,7 @@ Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins', 'for': 'python'}
 Plug 'zchee/deoplete-jedi', {'for': 'python'}
 
 Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']} " Snippets
-Plug 'honza/vim-snippets', {'for': ['python', 'cpp']}
+" Plug 'honza/vim-snippets', {'for': ['python', 'cpp']}
 
 call plug#end()
 
@@ -108,12 +104,6 @@ let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
 let g:airline_theme='minimalist'
 
-" Markdown config.
-let g:vim_markdown_conceal = 1
-let g:vim_markdown_conceal_code_blocks = 1
-autocmd FileType markdown.lsp-hover
-  \ nmap <silent><buffer>q :pclose<CR>| doautocmd <nomodeline> BufWinEnter
-
 " Configure snippets commands.
 let g:UltiSnipsSnippetDirectories = [g:snippets_dir]
 let g:UltiSnipsSnippetsDir = g:snippets_dir
@@ -132,8 +122,8 @@ let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_signs_enabled = 1
 let g:lsp_preview_max_width = 79
-let g:lsp_log_verbose = 1
-let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
+" let g:lsp_log_verbose = 1
+" let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
 
 imap <c-space> <Plug>(asyncomplete_force_refresh)
 nnoremap <F6> :LspRename<CR>

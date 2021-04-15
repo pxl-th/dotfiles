@@ -3,7 +3,7 @@ GuiPopupmenu 0
 set title " show filename in window title
 
 set background=dark
-colorscheme tequila-sunrise
+" colorscheme tequila-sunrise
 
 set lines=35 columns=160
 set vb t_vb=
