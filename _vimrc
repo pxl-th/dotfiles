@@ -18,8 +18,6 @@ Plug 'godlygeek/tabular'
 
 " Julia
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
-" Plug 'neovim/nvim-lspconfig'
-" Plug 'nvim-lua/completion-nvim'
 Plug 'prabirshrestha/async.vim', {'for': 'julia'}
 Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
 Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
@@ -31,7 +29,6 @@ Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins', 'for': 'python'}
 Plug 'zchee/deoplete-jedi', {'for': 'python'}
 
 Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']} " Snippets
-" Plug 'honza/vim-snippets', {'for': ['python', 'cpp']}
 
 call plug#end()
 
@@ -139,49 +136,6 @@ if executable('julia')
   \ 'whitelist': ['julia'],
   \ })
 endif
-
-" Beta native LSP (crashes server for now)
-" Print logfile
-" :lua print(vim.lsp.get_log_path())
-" Print current omnifunc
-" :set omnifunc?
-
-"lua << EOF
-"  local lspconfig = require 'lspconfig'
-"  local configs = require 'lspconfig/configs'
-"  local util = require 'lspconfig/util'
-
-"  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-"    vim.lsp.diagnostic.on_publish_diagnostics, {
-"      underline = false,
-"      virtual_text = false,
-"      signs = true,
-"      update_in_insert = false,
-"    }
-"  )
-
-"  configs.julia_lsp = {
-"    default_config = {
-"      cmd = {
-"        "julia", "--startup-file=no", "--history-file=no", "-e", [[
-"          using LanguageServer, LanguageServer.SymbolServer; runserver()
-"        ]]
-"      };
-"      filetypes = {'julia'};
-"      root_dir = function(fname)
-"        return util.find_git_ancestor(fname) or vim.loop.os_homedir()
-"      end;
-"    };
-"  }
-
-"  lspconfig.julia_lsp.setup{on_attach=require'completion'.on_attach}
-"EOF
-
-"nnoremap <F9> <cmd>lua print(vim.lsp.buf.server_ready())<CR>
-
-"if has("nvim-0.5")
-"  autocmd Filetype julia setlocal omnifunc=v:lua.vim.lsp.omnifunc
-"end
 
 " F3 to open file browser
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
