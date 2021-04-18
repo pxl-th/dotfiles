@@ -6,16 +6,15 @@ Collection of my dotfiles.
 
 ### Installation
 - Place config files in `~` directory.
-Create `~/vimfiles` directory and make sure it contains
-`backup` and `swap` directories.
+Create `~/vimfiles` directory and create `backup` and `swap` directories in it.
 
 - [Download](https://github.com/junegunn/vim-plug/blob/master/plug.vim)
 plugin manager and save it in `~/vimfiles/autoload` directory.
 
-- If you want, copy `custom-snippets` directory to `~/vimfiles`
-to add custom snippets.
+- Copy `custom-snippets` directory to `~/vimfiles` to add custom snippets.
 
-To load config files in NeoVim do the following:
+Make neovim read config files from home directory instead of default:
+
 - Add below text to `~\AppData\Local\nvim\init.vim`:
 ```vim
 set runtimepath+=~/vimfiles,~/vimfiles/after
@@ -37,7 +36,9 @@ Make sure that everything installs correctly.
 ### Python support:
 - Create common venv for nvim python plugins `virtualenv nvim-venv`
 - Activate `nvim-venv/Scripts/activate.ps1`
-- Install `pip install pynvim jedi flake8`
-- In `_vimrc` file modify `g:python3_host_prog` variable to point to `python.exe` in `nvim-venv`
+- Install `pip install pynvim python-language-server[all]`
+- In `_vimrc` file add two variables:
+  - `g:python3_host_prog` to point to `python.exe` in `nvim-venv`;
+  - `g:python_lsp` to point to `pyls.exe` in `nvim-venv`.
 
 Done.

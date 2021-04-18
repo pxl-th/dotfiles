@@ -13,20 +13,14 @@ Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
-Plug 'dstein64/vim-startuptime'
-Plug 'godlygeek/tabular'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
-" Julia
-Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
-Plug 'prabirshrestha/async.vim', {'for': 'julia'}
-Plug 'prabirshrestha/asyncomplete.vim', {'for': 'julia'}
-Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': 'julia'}
-Plug 'prabirshrestha/vim-lsp', {'for': 'julia'}
-" Python
-Plug 'w0rp/ale', {'for': 'python'} " Linting
-Plug 'davidhalter/jedi-vim', {'for': 'python'} " Autocompletion
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins', 'for': 'python'}
-Plug 'zchee/deoplete-jedi', {'for': 'python'}
+" LSP
+Plug 'JuliaEditorSupport/julia-vim', {'for': ['julia', 'python']}
+Plug 'prabirshrestha/async.vim', {'for': ['julia', 'python']}
+Plug 'prabirshrestha/asyncomplete.vim', {'for': ['julia', 'python']}
+Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': ['julia', 'python']}
+Plug 'prabirshrestha/vim-lsp', {'for': ['julia', 'python']}
 
 Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']} " Snippets
 
@@ -89,14 +83,6 @@ let g:indent_guides_enable_on_vim_startup = 1
 let s:grep_available=0
 let g:NERDTreeWinSize = 40
 
-let g:python3_host_prog = expand("~/projects/python/nvim-venv/Scripts/python.exe")
-let g:ale_linters = {'python': ['flake8']}
-let g:jedi#completions_enabled = 0  " Using deoplete instead
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
-let g:jedi#popup_select_first = 0
-let g:deoplete#enable_at_startup = 1
-
 let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
 let g:airline_theme='minimalist'
@@ -109,9 +95,10 @@ let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-" Julia stuff.
 " let g:latex_to_unicode_tab = 0
 let g:julia_indent_align_brackets = 0
+
+" LSP configuration.
 
 let g:asyncomplete_auto_popup = 1
 let g:lsp_diagnostics_echo_cursor = 1
@@ -122,20 +109,32 @@ let g:lsp_preview_max_width = 79
 " let g:lsp_log_verbose = 1
 " let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
 
+let g:python3_host_prog = expand("~/projects/python/nvim-venv/Scripts/python.exe")
+let g:python_lsp = expand("~/projects/python/nvim-venv/Scripts/pyls.exe")
+
+if executable('julia')
+  let g:julia_lsp = 'using LanguageServer, LanguageServer.SymbolServer; runserver()'
+  au User lsp_setup call lsp#register_server({
+  \ 'name': 'julia',
+  \ 'cmd': {server_info->['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp]},
+  \ 'whitelist': ['julia'],
+  \ })
+endif
+if executable(g:python_lsp)
+  au User lsp_setup call lsp#register_server({
+  \ 'name': 'pyls',
+  \ 'cmd': {server_info -> [g:python_lsp]},
+  \ 'allowlist': ['python'],
+  \ })
+endif
+
+" Hotkeys & commands.
+
 imap <c-space> <Plug>(asyncomplete_force_refresh)
 nnoremap <F6> :LspRename<CR>
 nnoremap <F7> :LspDefinition<CR>
 nnoremap <F8> :LspDocumentDiagnostics<CR>
 nnoremap <F9> :LspStatus<CR>
-
-if executable('julia')
-  let g:julia_lsp = 'using LanguageServer, LanguageServer.SymbolServer; runserver()'
-  autocmd User lsp_setup call lsp#register_server({
-  \ 'name': 'julia',
-  \ 'cmd': { server_info -> ['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp] },
-  \ 'whitelist': ['julia'],
-  \ })
-endif
 
 " F3 to open file browser
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
@@ -143,8 +142,6 @@ nnoremap <silent> <F3> :NERDTreeToggle<CR>
 nnoremap <F4> :noh<CR>
 " F8 to view file structure
 nnoremap <F5> :TagbarToggle<CR>
-
-command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
 
 " SHIFT-Del are Cut
 vnoremap <S-Del> "+x
@@ -157,3 +154,5 @@ vnoremap <S-Insert> <C-R>+
 " Next/prev tab
 nnoremap <C-Tab> gt
 nnoremap <C-S-Tab> gT
+
+command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
