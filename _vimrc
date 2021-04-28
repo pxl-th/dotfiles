@@ -14,6 +14,7 @@ Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'arzg/vim-colors-xcode'
 
 " LSP
 Plug 'JuliaEditorSupport/julia-vim', {'for': ['julia', 'python']}
