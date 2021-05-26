@@ -13,8 +13,16 @@ Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'arzg/vim-colors-xcode'
+
+" Telescope
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+" Treesitter
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'nvim-treesitter/playground'
 
 " LSP
 Plug 'JuliaEditorSupport/julia-vim', {'for': ['julia', 'python']}
@@ -26,6 +34,9 @@ Plug 'prabirshrestha/vim-lsp', {'for': ['julia', 'python']}
 Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']} " Snippets
 
 call plug#end()
+
+set background=dark
+colorscheme xcodedarkhc
 
 set completeopt=longest,menuone
 set fileencoding=utf-8
@@ -40,6 +51,7 @@ set wildmenu " Display completion matches
 set nospell
 set nowrap
 set number
+set switchbuf=vsplit
 
 set backspace=indent,eol,start " Allow regular usage of backspace
 set listchars=tab:>-,trail:~,extends:>,precedes:<
@@ -155,5 +167,8 @@ vnoremap <S-Insert> <C-R>+
 " Next/prev tab
 nnoremap <C-Tab> gt
 nnoremap <C-S-Tab> gT
+
+nnoremap <leader>ff <cmd>Telescope find_files theme=get_dropdown<cr>
+nnoremap <leader>fb <cmd>Telescope file_browser theme=get_dropdown<cr>
 
 command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
