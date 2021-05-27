@@ -141,6 +141,30 @@ if executable(g:python_lsp)
   \ })
 endif
 
+" Treesitter & Telescope configs.
+
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+"  highlight = {
+"    enable = true,
+"  },
+" }
+" EOF
+lua <<EOF
+require'telescope'.setup {
+  defaults = {
+    file_ignore_patterns = {
+      "node_modules/*",
+      ".git/*",
+      "node",
+      "stl",
+      "stp",
+      "gcode",
+    }
+  }
+}
+EOF
+
 " Hotkeys & commands.
 
 imap <c-space> <Plug>(asyncomplete_force_refresh)
