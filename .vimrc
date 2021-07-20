@@ -14,24 +14,18 @@ Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive' " Git integration
 Plug 'arzg/vim-colors-xcode'
-
 " Telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-
 " Treesitter
-" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Plug 'nvim-treesitter/playground'
-
-" LSP
-Plug 'JuliaEditorSupport/julia-vim', {'for': ['julia', 'python']}
-Plug 'prabirshrestha/async.vim', {'for': ['julia', 'python']}
-Plug 'prabirshrestha/asyncomplete.vim', {'for': ['julia', 'python']}
-Plug 'prabirshrestha/asyncomplete-lsp.vim', {'for': ['julia', 'python']}
-Plug 'prabirshrestha/vim-lsp', {'for': ['julia', 'python']}
-
-Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']} " Snippets
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" NEW LSP
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
+" Snippets
+Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']}
 
 call plug#end()
 
@@ -52,6 +46,7 @@ set nospell
 set nowrap
 set number
 set switchbuf=vsplit
+set mouse=a " Enable selection using mouse
 
 set backspace=indent,eol,start " Allow regular usage of backspace
 set listchars=tab:>-,trail:~,extends:>,precedes:<
@@ -113,43 +108,81 @@ let g:julia_indent_align_brackets = 0
 
 " LSP configuration.
 
-let g:asyncomplete_auto_popup = 1
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_diagnostics_enabled = 1
-let g:lsp_diagnostics_virtual_text_enabled = 0
-let g:lsp_signs_enabled = 1
-let g:lsp_preview_max_width = 79
-" let g:lsp_log_verbose = 1
-" let g:lsp_log_file = expand('~/vimfiles/logs/vim-lsp.log')
+set completeopt=menuone,noinsert,noselect
 
-let g:python3_host_prog = expand("~/projects/python/nvim-venv/Scripts/python.exe")
-let g:python_lsp = expand("~/projects/python/nvim-venv/Scripts/pyls.exe")
+let g:python3_host_prog = expand("~/projects/python/nvim-venv/bin/python")
+let g:completion_enable_snippet = 'UltiSnips'
+let g:completion_enable_auto_popup = 1
 
-if executable('julia')
-  let g:julia_lsp = 'using LanguageServer, LanguageServer.SymbolServer; runserver()'
-  au User lsp_setup call lsp#register_server({
-  \ 'name': 'julia',
-  \ 'cmd': {server_info->['julia', '--startup-file=no', '--history-file=no', '-e', g:julia_lsp]},
-  \ 'whitelist': ['julia'],
-  \ })
-endif
-if executable(g:python_lsp)
-  au User lsp_setup call lsp#register_server({
-  \ 'name': 'pyls',
-  \ 'cmd': {server_info -> [g:python_lsp]},
-  \ 'allowlist': ['python'],
-  \ })
-endif
+" let g:python_lsp = expand("~/projects/python/nvim-venv/bin/pyls")
+
+lua << EOF
+local completions = require 'completion'
+
+local custom_attach = function(client, bufnr)
+  local function buf_set_keymap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
+  local function buf_set_option(...)
+    vim.api.nvim_buf_set_option(bufnr, ...)
+  end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  completions.on_attach()
+
+  local opts = {noremap = true, silent = true}
+  local ns_opts = {noremap = true, silent = false}
+
+  buf_set_keymap('n', 'N', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', '<leader>rf', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+
+  buf_set_keymap('n', '<F6>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<F7>', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<F9>', '<Cmd>lua print(vim.lsp.buf.server_ready())<CR>', ns_opts)
+
+  print("LSP Attached")
+end
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    underline = false,
+    virtual_text = false,
+    signs = true,
+    update_in_insert = false,
+  }
+)
+
+local configs = require 'lspconfig/configs'
+local util = require 'lspconfig/util'
+configs.julia_lsp = {
+  default_config = {
+    cmd = {
+      "julia", "--startup-file=no", "--history-file=no", "-e", [[
+        using LanguageServer, LanguageServer.SymbolServer; runserver()
+      ]]
+    };
+    filetypes = {'julia'};
+    root_dir = function(fname)
+      return util.find_git_ancestor(fname) or vim.loop.os_homedir()
+    end;
+  };
+}
+
+local lsp = require 'lspconfig'
+lsp.julia_lsp.setup{on_attach=custom_attach}
+EOF
 
 " Treesitter & Telescope configs.
 
-" lua <<EOF
-" require'nvim-treesitter.configs'.setup {
-"  highlight = {
-"    enable = true,
-"  },
-" }
-" EOF
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+ highlight = {
+   enable = true,
+ },
+}
+EOF
 lua <<EOF
 require'telescope'.setup {
   defaults = {
@@ -167,32 +200,19 @@ EOF
 
 " Hotkeys & commands.
 
-imap <c-space> <Plug>(asyncomplete_force_refresh)
-nnoremap <F6> :LspRename<CR>
-nnoremap <F7> :LspDefinition<CR>
-nnoremap <F8> :LspDocumentDiagnostics<CR>
-nnoremap <F9> :LspStatus<CR>
-
 " F3 to open file browser
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " Reset search highlight
 nnoremap <F4> :noh<CR>
-" F8 to view file structure
-nnoremap <F5> :TagbarToggle<CR>
+" Copy & Paste to system clipboard. Need xclip to be installed.
+vnoremap <C-c> :w !xclip -sel c<CR><CR>
+noremap <C-v> :r !xsel -b<CR><CR>
 
-" SHIFT-Del are Cut
-vnoremap <S-Del> "+x
-" CTRL-Insert are Copy
-vnoremap <C-Insert> "+y
-" SHIFT-Insert are Paste
-map <S-Insert> "+gP
-inoremap <S-Insert> <C-R><C-O>+
-vnoremap <S-Insert> <C-R>+
 " Next/prev tab
 nnoremap <C-Tab> gt
 nnoremap <C-S-Tab> gT
 
-nnoremap <leader>ff <cmd>Telescope find_files theme=get_dropdown<cr>
-nnoremap <leader>fb <cmd>Telescope file_browser theme=get_dropdown<cr>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fb <cmd>Telescope file_browser<cr>
 
 command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
