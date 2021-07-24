@@ -11,13 +11,13 @@ Plug 'nvim-lua/plenary.nvim' " Neovim-specific dev-packages.
 Plug 'lewis6991/gitsigns.nvim' " Show git signs.
 " Telescope & Treesitter
 Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Neovim LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 
+" --Any Vim--
 Plug 'tpope/vim-commentary' " Comment-stuff-out plugin
 Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
 Plug 'vim-airline/vim-airline' " Pretty status bar
