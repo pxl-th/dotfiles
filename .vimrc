@@ -6,23 +6,25 @@ let g:pluggins_dir = expand("~/vimfiles/pluggins")
 
 call plug#begin(g:pluggins_dir) " Load plugins
 
-Plug 'scrooloose/nerdtree' " File browser
-Plug 'airblade/vim-gitgutter' " Show git modifications
+" --Neovim specifics--
+Plug 'nvim-lua/plenary.nvim' " Neovim-specific dev-packages.
+Plug 'lewis6991/gitsigns.nvim' " Show git signs.
+" Telescope & Treesitter
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Neovim LSP
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+
 Plug 'tpope/vim-commentary' " Comment-stuff-out plugin
 Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive' " Git integration
 Plug 'arzg/vim-colors-xcode'
-" Telescope
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-" Treesitter
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" NEW LSP
-Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+
+" Julia-specific support.
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 " Snippets
 Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']}
@@ -32,7 +34,7 @@ call plug#end()
 set background=dark
 colorscheme xcodedarkhc
 
-set completeopt=longest,menuone
+set completeopt=menuone,noinsert,noselect
 set fileencoding=utf-8
 set encoding=utf-8
 set updatetime=750
@@ -88,8 +90,7 @@ autocmd Filetype plaintex setlocal ts=2 sw=2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_color_change_percent = 10
 let g:indent_guides_enable_on_vim_startup = 1
-let s:grep_available=0
-let g:NERDTreeWinSize = 40
+let s:grep_available=1
 
 let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
@@ -103,12 +104,9 @@ let g:UltiSnipsJumpForwardTrigger="<C-a>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-" let g:latex_to_unicode_tab = 0
 let g:julia_indent_align_brackets = 0
 
 " LSP configuration.
-
-set completeopt=menuone,noinsert,noselect
 
 let g:python3_host_prog = expand("~/projects/python/nvim-venv/bin/python")
 let g:completion_enable_snippet = 'UltiSnips'
@@ -116,9 +114,12 @@ let g:completion_enable_auto_popup = 1
 
 " let g:python_lsp = expand("~/projects/python/nvim-venv/bin/pyls")
 
-lua << EOF
-local completions = require 'completion'
+" Use completion-nvim in every buffer.
+autocmd BufEnter * lua require 'completion'.on_attach()
+" Hightlight text on yank.
+au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
 
+lua << EOF
 local custom_attach = function(client, bufnr)
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -129,20 +130,17 @@ local custom_attach = function(client, bufnr)
 
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  completions.on_attach()
-
   local opts = {noremap = true, silent = true}
   local ns_opts = {noremap = true, silent = false}
 
-  buf_set_keymap('n', 'N', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<leader><F2>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<F2>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', '<leader>rf', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 
   buf_set_keymap('n', '<F6>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<F7>', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   buf_set_keymap('n', '<F9>', '<Cmd>lua print(vim.lsp.buf.server_ready())<CR>', ns_opts)
-
-  print("LSP Attached")
 end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -182,8 +180,6 @@ require'nvim-treesitter.configs'.setup {
    enable = true,
  },
 }
-EOF
-lua <<EOF
 require'telescope'.setup {
   defaults = {
     file_ignore_patterns = {
@@ -196,17 +192,16 @@ require'telescope'.setup {
     }
   }
 }
+require('gitsigns').setup()
 EOF
 
 " Hotkeys & commands.
 
-" F3 to open file browser
-nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " Reset search highlight
 nnoremap <F4> :noh<CR>
 " Copy & Paste to system clipboard. Need xclip to be installed.
 vnoremap <C-c> :w !xclip -sel c<CR><CR>
-noremap <C-v> :r !xsel -b<CR><CR>
+noremap <S-C-v> :r !xsel -b<CR><CR>
 
 " Next/prev tab
 nnoremap <C-Tab> gt
