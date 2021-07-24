@@ -140,7 +140,6 @@ local custom_attach = function(client, bufnr)
 
   buf_set_keymap('n', '<F6>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<F7>', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '<F9>', '<Cmd>lua print(vim.lsp.buf.server_ready())<CR>', ns_opts)
 end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
