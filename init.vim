@@ -1,3 +1,6 @@
+set runtimepath+=~/vimfiles,~/vimfiles/after
+set packpath+=~/vimfiles
+
 set backup
 let &backupdir = expand("~/vimfiles/backup")
 let &directory = expand('~/vimfiles/swap//')
@@ -17,9 +20,10 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 
+Plug 'lukas-reineke/indent-blankline.nvim' " Visualize indents
+
 " --Any Vim--
 Plug 'tpope/vim-commentary' " Comment-stuff-out plugin
-Plug 'nathanaelkane/vim-indent-guides' " Visualize indents
 Plug 'vim-airline/vim-airline' " Pretty status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'arzg/vim-colors-xcode'
@@ -87,10 +91,7 @@ autocmd Filetype tex setlocal ts=2 sw=2
 autocmd Filetype plaintex setlocal ts=2 sw=2
 
 " Plugins configurations
-let g:indent_guides_guide_size = 1
-let g:indent_guides_color_change_percent = 10
-let g:indent_guides_enable_on_vim_startup = 1
-let s:grep_available=1
+let g:indentLine_char = '▏'
 
 let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
 let g:airline_detect_spell=0
