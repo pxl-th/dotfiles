@@ -207,7 +207,7 @@ noremap <S-C-v> :r !xsel -b<CR><CR>
 nnoremap <C-Tab> gt
 nnoremap <C-S-Tab> gT
 
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fb <cmd>Telescope file_browser<cr>
+nnoremap <leader>ff <cmd>Telescope find_files disable_devicons=true<cr>
+nnoremap <leader>fb <cmd>Telescope file_browser disable_devicons=true<cr>
 
 command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
