@@ -19,19 +19,16 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Neovim LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
-
 Plug 'lukas-reineke/indent-blankline.nvim' " Visualize indents
 
 " --Any Vim--
 Plug 'tpope/vim-commentary' " Comment-stuff-out plugin
-Plug 'vim-airline/vim-airline' " Pretty status bar
-Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'itchyny/lightline.vim'
 Plug 'arzg/vim-colors-xcode'
 
-" Julia-specific support.
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
-" Snippets
-Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia']}
+Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia', 'javascript']}
 
 call plug#end()
 
@@ -70,6 +67,8 @@ endif
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
+autocmd Filetype vim,tex,plaintex,javascript,json setlocal ts=2 sw=2
+
 set expandtab
 set autoindent
 set smarttab
@@ -86,16 +85,14 @@ set foldlevel=2
 nnoremap <space> za
 vnoremap <space> zf
 
-autocmd Filetype vim setlocal ts=2 sw=2
-autocmd Filetype tex setlocal ts=2 sw=2
-autocmd Filetype plaintex setlocal ts=2 sw=2
-
-" Plugins configurations
-let g:indentLine_char = '▏'
-
-let g:airline#extensions#default#layout = [[ 'a', 'b', 'c', 'y', 'z' ], []]
-let g:airline_detect_spell=0
-let g:airline_theme='minimalist'
+let g:indentLine_char = '┊'
+lua << EOF
+vim.g.lightline = {
+  colorscheme = 'one',
+  active = {left = {{'mode', 'paste'}, {'gitbranch', 'readonly', 'filename', 'modified'}}},
+  component_function = {gitbranch = 'FugitiveStatusline'},
+}
+EOF
 
 " Configure snippets commands.
 let g:UltiSnipsSnippetDirectories = [g:snippets_dir]
@@ -148,7 +145,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     underline = false,
     virtual_text = false,
     signs = true,
-    update_in_insert = false,
+    update_in_insert = true,
   }
 )
 
@@ -183,12 +180,7 @@ require'nvim-treesitter.configs'.setup {
 require'telescope'.setup {
   defaults = {
     file_ignore_patterns = {
-      "node_modules/*",
-      ".git/*",
-      "node",
-      "stl",
-      "stp",
-      "gcode",
+      "node_modules/*", ".git/*", "node", "stl", "stp", "gcode",
     }
   }
 }
