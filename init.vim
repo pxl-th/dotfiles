@@ -18,7 +18,11 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Neovim LSP
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'kdheepak/cmp-latex-symbols'
+
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 " --Any Vim--
@@ -95,19 +99,15 @@ let g:UltiSnipsEditSplit="vertical"
 let g:julia_indent_align_brackets = 0
 
 " LSP configuration.
-
 let g:python3_host_prog = expand("~/projects/python/nvim-venv/bin/python")
-let g:completion_enable_snippet = 'UltiSnips'
-let g:completion_enable_auto_popup = 1
 
 " let g:python_lsp = expand("~/projects/python/nvim-venv/bin/pyls")
 
-" Use completion-nvim in every buffer.
-autocmd BufEnter * lua require 'completion'.on_attach()
 " Hightlight text on yank.
 au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
 
 lua << EOF
+-- Custom attach function with defined mappings.
 local custom_attach = function(client, bufnr)
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -136,6 +136,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
+-- Julia custom LSP config.
 local configs = require 'lspconfig/configs'
 local util = require 'lspconfig/util'
 configs.julia_lsp = {
@@ -151,10 +152,31 @@ configs.julia_lsp = {
     end,
   },
 }
-local lsp = require'lspconfig'
 
-lsp.julia_lsp.setup{on_attach=custom_attach}
-lsp.tsserver.setup{on_attach=custom_attach}
+-- Completion engine setup.
+local cmp = require 'cmp'
+cmp.setup({
+  mapping = {
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+  },
+  sources = {
+    {name = "latex_symbols"},
+    {name = "nvim_lsp"},
+    {name = "buffer"},
+  },
+})
+
+-- Communicate support for capabilities to LSP servers.
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+local lsp = require'lspconfig'
+lsp.julia_lsp.setup{on_attach=custom_attach, capabilities=capabilities}
+lsp.tsserver.setup{on_attach=custom_attach, capabilities=capabilities}
 
 
 require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
