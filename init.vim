@@ -19,6 +19,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Neovim LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'kdheepak/cmp-latex-symbols'
@@ -156,6 +157,11 @@ configs.julia_lsp = {
 -- Completion engine setup.
 local cmp = require 'cmp'
 cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
   mapping = {
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm {
@@ -167,6 +173,7 @@ cmp.setup({
     {name = "latex_symbols"},
     {name = "nvim_lsp"},
     {name = "buffer"},
+    {name = "vsnip"},
   },
 })
 
