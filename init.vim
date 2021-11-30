@@ -131,8 +131,8 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 )
 
 -- Julia custom LSP config.
-local configs = require 'lspconfig/configs'
-local util = require 'lspconfig/util'
+local configs = require 'lspconfig.configs'
+local util = require 'lspconfig.util'
 
 configs.julia_lsp = {
   default_config = {
@@ -194,16 +194,10 @@ vim.g.lightline = {
 }
 
 -- Identation visualizations.
-vim.opt.list = true
+-- vim.opt.list = true
 --vim.g.indentLine_char = '┊'
 --vim.opt.listchars:append("space:⋅")
---vim.opt.listchars:append("eol:↴")
-
-require("indent_blankline").setup {
-    space_char_blankline = " ",
-    show_current_context = true,
-    show_current_context_start = true,
-}
+-- vim.opt.listchars:append("eol:↴")
 EOF
 
 " Reset search highlight
