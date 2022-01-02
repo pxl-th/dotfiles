@@ -15,6 +15,7 @@ Plug 'lewis6991/gitsigns.nvim'
 " Telescope & Treesitter
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Neovim LSP
 Plug 'neovim/nvim-lspconfig'
@@ -53,7 +54,8 @@ set showmatch
 set wildmenu " Display completion matches
 set nospell
 set nowrap
-set number
+set number relativenumber
+set nu rnu
 set switchbuf=vsplit
 set mouse=a " Enable mouse
 
@@ -100,24 +102,26 @@ let g:UltiSnipsEditSplit="vertical"
 
 let g:julia_indent_align_brackets = 0
 
-let g:python3_host_prog = expand("~/projects/python/nvim-venv/bin/python")
+let g:python3_host_prog = expand("~/projects/nvim-venv/bin/python")
 
 " Hightlight text on yank.
 au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
 
 lua << EOF
--- Custom attach function with defined mappings.
+-- LSP: Custom attach function with defined mappings.
 local custom_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   local opts = {noremap = true, silent = true}
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader><F2>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F2>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader><F2>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F2>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F7>', '<cmd>lua vim.diagnostic.show_line_diagnostics()<CR>', opts)
+
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rf', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F6>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F7>', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', opts)
 end
 
@@ -180,24 +184,30 @@ lsp.julia_lsp.setup{on_attach=custom_attach, capabilities=capabilities}
 lsp.tsserver.setup{on_attach=custom_attach, capabilities=capabilities}
 lsp.pylsp.setup{on_attach=custom_attach, capabilities=capabilities}
 
-
 require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
-require'telescope'.setup{defaults = {file_ignore_patterns = {
-  "node_modules/*", ".git/*", "node", "stl", "stp", "gcode",
-}}}
+require'telescope'.setup{
+  extensions = {
+    file_browser = {
+      disable_devicons = true,
+    },
+  }
+}
+require'telescope'.load_extension "file_browser"
 require'gitsigns'.setup()
+
+vim.api.nvim_set_keymap(
+  "n", "<leader>fb",
+  "<cmd>lua require 'telescope'.extensions.file_browser.file_browser()<CR>",
+  {noremap = true})
+vim.api.nvim_set_keymap(
+  "n", "<leader>ff",
+  "<cmd>Telescope find_files disable_devicons=true<CR>",
+  {noremap = true})
 
 vim.g.lightline = {
   colorscheme = 'one',
   active = {left = {{'mode', 'paste'}, {'gitbranch', 'readonly', 'filename', 'modified'}}},
-  component_function = {gitbranch = 'FugitiveStatusline'},
-}
-
--- Identation visualizations.
--- vim.opt.list = true
---vim.g.indentLine_char = '┊'
---vim.opt.listchars:append("space:⋅")
--- vim.opt.listchars:append("eol:↴")
+  component_function = {gitbranch = 'FugitiveStatusline'}}
 EOF
 
 " Reset search highlight
@@ -209,8 +219,6 @@ noremap <S-C-v> :r !xsel -b<CR><CR>
 nnoremap <C-Tab> gt
 nnoremap <C-S-Tab> gT
 
-nnoremap <leader>ff <cmd>Telescope find_files disable_devicons=true<cr>
-nnoremap <leader>fb <cmd>Telescope file_browser disable_devicons=true<cr>
 " Fold/unfold.
 nnoremap <space> za
 vnoremap <space> zf
