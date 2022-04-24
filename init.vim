@@ -87,11 +87,6 @@ set smartindent
 set incsearch
 set hlsearch
 
-set foldmethod=indent
-set nofoldenable
-set foldnestmax=10
-set foldlevel=2
-
 " Configure snippets commands.
 let g:UltiSnipsSnippetDirectories = [g:snippets_dir]
 let g:UltiSnipsSnippetsDir = g:snippets_dir
@@ -160,13 +155,13 @@ cmp.setup({
       vim.fn["vsnip#anonymous"](args.body)
     end,
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
     },
-  },
+  }),
   sources = {
     {name = "latex_symbols"},
     {name = "nvim_lsp"},
@@ -195,6 +190,12 @@ require'telescope'.setup{
 require'telescope'.load_extension "file_browser"
 require'gitsigns'.setup()
 
+vim.g.lightline = {
+  colorscheme = 'one',
+  active = {left = {{'mode', 'paste'}, {'gitbranch', 'readonly', 'filename', 'modified'}}},
+  component_function = {gitbranch = 'FugitiveStatusline'}}
+
+-- Set keybindings.
 vim.api.nvim_set_keymap(
   "n", "<leader>fb",
   "<cmd>lua require 'telescope'.extensions.file_browser.file_browser()<CR>",
@@ -204,10 +205,15 @@ vim.api.nvim_set_keymap(
   "<cmd>Telescope find_files disable_devicons=true<CR>",
   {noremap = true})
 
-vim.g.lightline = {
-  colorscheme = 'one',
-  active = {left = {{'mode', 'paste'}, {'gitbranch', 'readonly', 'filename', 'modified'}}},
-  component_function = {gitbranch = 'FugitiveStatusline'}}
+-- Use treesitter for folding.
+vim.opt.foldmethod = "expr"
+vim.opt.foldenable = false
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+-- set foldmethod=expr
+-- set nofoldenable
+-- set foldnestmax=10
+-- set foldlevel=2
 EOF
 
 " Reset search highlight
