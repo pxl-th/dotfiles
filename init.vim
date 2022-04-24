@@ -97,27 +97,31 @@ let g:UltiSnipsEditSplit="vertical"
 
 let g:julia_indent_align_brackets = 0
 
-let g:python3_host_prog = expand("~/projects/nvim-venv/bin/python")
+let g:python3_host_prog = expand("~/code/nvim-venv/bin/python")
 
 " Hightlight text on yank.
 au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
 
 lua << EOF
+local telescope = require 'telescope'
+local telescope_builtin = require 'telescope.builtin'
+local configs = require 'lspconfig.configs'
+local util = require 'lspconfig.util'
+local cmp = require 'cmp'
+
 -- LSP: Custom attach function with defined mappings.
 local custom_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  local opts = {noremap = true, silent = true}
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader><F2>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F2>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F7>', '<cmd>lua vim.diagnostic.show_line_diagnostics()<CR>', opts)
+  vim.keymap.set('n', '<leader><F2>', vim.diagnostic.goto_prev, {buffer = true})
+  vim.keymap.set('n', '<F2>', vim.diagnostic.goto_next, {buffer = true})
 
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rf', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F6>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer = true})
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, {buffer = true})
+  vim.keymap.set('n', '<leader>rf', vim.lsp.buf.references, {buffer = true})
+  vim.keymap.set('n', '<F6>', vim.lsp.buf.rename, {buffer = true})
 
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', opts)
+  vim.keymap.set('n', '<leader>f', telescope_builtin.lsp_dynamic_workspace_symbols, {buffer = true})
 end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -130,9 +134,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 )
 
 -- Julia custom LSP config.
-local configs = require 'lspconfig.configs'
-local util = require 'lspconfig.util'
-
 configs.julia_lsp = {
   default_config = {
     cmd = {
@@ -148,7 +149,6 @@ configs.julia_lsp = {
 }
 
 -- Completion engine setup.
-local cmp = require 'cmp'
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -180,14 +180,14 @@ lsp.tsserver.setup{on_attach=custom_attach, capabilities=capabilities}
 lsp.pylsp.setup{on_attach=custom_attach, capabilities=capabilities}
 
 require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
-require'telescope'.setup{
+telescope.setup{
   extensions = {
     file_browser = {
       disable_devicons = true,
     },
   }
 }
-require'telescope'.load_extension "file_browser"
+telescope.load_extension "file_browser"
 require'gitsigns'.setup()
 
 vim.g.lightline = {
@@ -196,24 +196,15 @@ vim.g.lightline = {
   component_function = {gitbranch = 'FugitiveStatusline'}}
 
 -- Set keybindings.
-vim.api.nvim_set_keymap(
-  "n", "<leader>fb",
-  "<cmd>lua require 'telescope'.extensions.file_browser.file_browser()<CR>",
-  {noremap = true})
-vim.api.nvim_set_keymap(
-  "n", "<leader>ff",
-  "<cmd>Telescope find_files disable_devicons=true<CR>",
-  {noremap = true})
+vim.keymap.set("n", "<leader>fb", telescope.extensions.file_browser.file_browser)
+vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files)
 
 -- Use treesitter for folding.
 vim.opt.foldmethod = "expr"
 vim.opt.foldenable = false
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
--- set foldmethod=expr
--- set nofoldenable
--- set foldnestmax=10
--- set foldlevel=2
+vim.opt.laststatus = 3
 EOF
 
 " Reset search highlight
