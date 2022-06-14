@@ -116,10 +116,11 @@ local custom_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader><F2>', vim.diagnostic.goto_prev, {buffer = true})
   vim.keymap.set('n', '<F2>', vim.diagnostic.goto_next, {buffer = true})
 
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer = true})
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, {buffer = true})
-  vim.keymap.set('n', '<leader>rf', vim.lsp.buf.references, {buffer = true})
   vim.keymap.set('n', '<F6>', vim.lsp.buf.rename, {buffer = true})
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer = true})
+  vim.keymap.set('n', '<leader>rf', vim.lsp.buf.references, {buffer = true})
+  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
 
   vim.keymap.set('n', '<leader>f', telescope_builtin.lsp_dynamic_workspace_symbols, {buffer = true})
 end
@@ -203,8 +204,6 @@ vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files)
 vim.opt.foldmethod = "expr"
 vim.opt.foldenable = false
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
-vim.opt.laststatus = 3
 EOF
 
 " Reset search highlight
