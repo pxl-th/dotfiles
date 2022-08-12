@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# INSTALL:
+# 1. sudo apt install exiv2
+
+fullfile=$1
+filename="${fullfile%.*}"
+
+exiv2 -ep1 -f $1
+convert ${filename}-preview1.jpg $2
+rm ${filename}-preview1.jpg
