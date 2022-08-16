@@ -5,23 +5,21 @@ Collection of my dotfiles.
 ## NVim dotfiles
 
 ### Installation
-- Create `~/vimfiles` directory and create `backup` and `swap` directories in it.
 
-- [Download](https://github.com/junegunn/vim-plug/blob/master/plug.vim)
+1. Execute:
+```
+sudo apt install build-essential python3-pip xclip fd-find ripgrep
+```
+2. Create `~/vimfiles` directory and create `backup` and `swap` directories in it.
+3. [Download](https://github.com/junegunn/vim-plug/blob/master/plug.vim)
 plugin manager and save it in `~/vimfiles/autoload` directory.
-
-- Copy `custom-snippets` directory to `~/vimfiles` to add custom snippets.
-
-- After that, reload NeoVim, and run `:PlugInstall` command to install plugins.
-
-- Reload, done.
+4. Copy `custom-snippets` directory to `~/vimfiles` to add custom snippets.
+5. Reload NeoVim and run `:PlugInstall` command to install plugins.
+6. Reload, done.
 
 ### Python support:
-- Create common venv for nvim python plugins `virtualenv nvim-venv`
-- Activate `nvim-venv/Scripts/activate.ps1`
-- Install `pip install pynvim python-language-server[all]`
-- In `_vimrc` file add two variables:
-  - `g:python3_host_prog` to point to `python.exe` in `nvim-venv`;
-  - `g:python_lsp` to point to `pyls.exe` in `nvim-venv`.
+1. Create common venv for nvim python plugins `virtualenv nvim-venv`.
+2. Activate `nvim-venv/Scripts/activate.ps1`
+3. Install `pip install pynvim python-language-server[all]`
 
 Have fun.
