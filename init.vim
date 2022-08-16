@@ -10,22 +10,27 @@ let g:pluggins_dir = expand("~/vimfiles/pluggins")
 call plug#begin(g:pluggins_dir)
 
 " --Neovim specifics--
-Plug 'nvim-lua/plenary.nvim' " Neovim-specific dev-packages.
+Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
+
 " Telescope & Treesitter
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 " Neovim LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'kdheepak/cmp-latex-symbols'
-
 Plug 'lukas-reineke/indent-blankline.nvim'
+
+" Snippets.
+
+Plug 'SirVer/ultisnips'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
 " --Any Vim--
 Plug 'tpope/vim-commentary'
@@ -35,8 +40,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'arzg/vim-colors-xcode'
 
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
-Plug 'SirVer/ultisnips', {'for': ['python', 'cpp', 'julia', 'javascript']}
-
 call plug#end()
 
 set background=dark
@@ -48,7 +51,7 @@ set encoding=utf-8
 set updatetime=250
 set autochdir
 
-set colorcolumn=80 " Set guideline at 80 characters
+set colorcolumn=80
 set cursorline
 set showmatch
 set wildmenu " Display completion matches
@@ -90,9 +93,6 @@ set hlsearch
 " Configure snippets commands.
 let g:UltiSnipsSnippetDirectories = [g:snippets_dir]
 let g:UltiSnipsSnippetsDir = g:snippets_dir
-let g:UltiSnipsExpandTrigger="<C-s>"
-let g:UltiSnipsJumpForwardTrigger="<C-a>"
-let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
 let g:julia_indent_align_brackets = 0
@@ -108,6 +108,9 @@ local telescope_builtin = require 'telescope.builtin'
 local configs = require 'lspconfig.configs'
 local util = require 'lspconfig.util'
 local cmp = require 'cmp'
+
+local cmp_ultisnips = require 'cmp_nvim_ultisnips'
+local cmp_ultisnips_mappings = require'cmp_nvim_ultisnips.mappings'
 
 -- LSP: Custom attach function with defined mappings.
 local custom_attach = function(client, bufnr)
@@ -150,10 +153,11 @@ configs.julia_lsp = {
 }
 
 -- Completion engine setup.
+cmp_ultisnips.setup {}
 cmp.setup({
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
+      vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert({
@@ -162,11 +166,16 @@ cmp.setup({
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
     },
+    ['<C-s>'] = cmp.mapping(
+      function(fallback)
+        cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+      end
+    ),
   }),
   sources = {
     {name = "latex_symbols"},
     {name = "nvim_lsp"},
-    {name = "vsnip"},
+    {name = "ultisnips"},
   },
 })
 -- {name = "buffer"},
@@ -208,9 +217,11 @@ EOF
 
 " Reset search highlight
 nnoremap <F4> :noh<CR>
+
 " Copy & Paste to system clipboard. Need xclip to be installed.
 vnoremap <C-c> :w !xclip -sel c<CR><CR>
 noremap <S-C-v> :r !xsel -b<CR><CR>
+
 " Next/prev tab
 nnoremap <C-Tab> gt
 nnoremap <C-S-Tab> gT

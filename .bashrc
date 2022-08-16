@@ -119,8 +119,9 @@ fi
 alias upd='sudo apt update && sudo apt list --upgradable'
 alias upg='sudo apt upgrade'
 alias ls='ls -Ghal --color'
-alias jl='julia -t16 --project=.'
-alias jls='julia -t16 --project=. --sysimage=JuliaSysimage.so'
+alias jl='julia --threads=auto --project=.'
+alias jls='julia --threads=auto --project=. --sysimage=JuliaSysimage.so'
+alias jlt='julia --threads=auto'
 alias sshamd='kitty +kitten ssh -i .ssh/amd_mit asmirnov@100.110.24.93'
 
 export PATH="/home/pxl-th/.local/bin:$PATH"
