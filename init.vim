@@ -28,7 +28,6 @@ Plug 'kdheepak/cmp-latex-symbols'
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Snippets.
-
 Plug 'SirVer/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
@@ -201,9 +200,15 @@ telescope.load_extension "file_browser"
 require'gitsigns'.setup()
 
 vim.g.lightline = {
-  colorscheme = 'one',
-  active = {left = {{'mode', 'paste'}, {'gitbranch', 'readonly', 'filename', 'modified'}}},
-  component_function = {gitbranch = 'FugitiveStatusline'}}
+  active = {
+    left = {{'mode', 'paste'}, {'gitbranch', 'readonly', 'absolutepath', 'modified'}}
+  },
+  inactive = {
+    left = {{'gitbranch', 'absolutepath', 'modified'}},
+    right = {{}}
+  },
+  component_function = {gitbranch = 'FugitiveStatusline'},
+}
 
 -- Set keybindings.
 vim.keymap.set("n", "<leader>fb", telescope.extensions.file_browser.file_browser)
