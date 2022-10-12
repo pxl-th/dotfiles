@@ -27,6 +27,8 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'kdheepak/cmp-latex-symbols'
 Plug 'lukas-reineke/indent-blankline.nvim'
 
+Plug 'ggandor/leap.nvim'
+
 " Snippets.
 Plug 'SirVer/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
@@ -36,13 +38,13 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'itchyny/lightline.vim'
 
-Plug 'arzg/vim-colors-xcode'
+Plug 'cocopon/iceberg.vim'
 
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 call plug#end()
 
 set background=dark
-colorscheme xcodedarkhc
+colorscheme iceberg
 
 set completeopt=menuone,noinsert,noselect
 set fileencoding=utf-8
@@ -110,6 +112,8 @@ local cmp = require 'cmp'
 
 local cmp_ultisnips = require 'cmp_nvim_ultisnips'
 local cmp_ultisnips_mappings = require'cmp_nvim_ultisnips.mappings'
+
+require('leap').set_default_keymaps()
 
 -- LSP: Custom attach function with defined mappings.
 local custom_attach = function(client, bufnr)
@@ -213,6 +217,7 @@ vim.g.lightline = {
 -- Set keybindings.
 vim.keymap.set("n", "<leader>fb", telescope.extensions.file_browser.file_browser)
 vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files)
+vim.keymap.set("n", "<leader>fg", telescope_builtin.live_grep)
 
 -- Use treesitter for folding.
 vim.opt.foldmethod = "expr"
