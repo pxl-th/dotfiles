@@ -19,7 +19,7 @@ plugin manager and save it in `~/vimfiles/autoload` directory.
 
 ### Python support:
 1. Create common venv for nvim python plugins `virtualenv nvim-venv`.
-2. Activate `nvim-venv/Scripts/activate.ps1`
+2. Activate `nvim-venv/Scripts/activate`
 3. Install `pip install pynvim python-language-server[all]`
 
 Have fun.
