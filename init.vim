@@ -38,13 +38,13 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'itchyny/lightline.vim'
 
-Plug 'cocopon/iceberg.vim'
+Plug 'kvrohit/mellow.nvim'
 
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 call plug#end()
 
-set background=dark
-colorscheme iceberg
+set background=light
+colorscheme mellow
 
 set completeopt=menuone,noinsert,noselect
 set fileencoding=utf-8
