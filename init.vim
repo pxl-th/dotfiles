@@ -4,7 +4,6 @@ set packpath+=~/vimfiles
 set backup
 let &backupdir = expand("~/vimfiles/backup")
 let &directory = expand('~/vimfiles/swap//')
-let g:snippets_dir = expand("~/vimfiles/custom-snippets")
 let g:pluggins_dir = expand("~/vimfiles/pluggins")
 
 call plug#begin(g:pluggins_dir)
@@ -30,8 +29,8 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'ggandor/leap.nvim'
 
 " Snippets.
-Plug 'SirVer/ultisnips'
-Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'dcampos/nvim-snippy'
+Plug 'dcampos/cmp-snippy'
 
 " --Any Vim--
 Plug 'tpope/vim-commentary'
@@ -91,14 +90,7 @@ set smartindent
 set incsearch
 set hlsearch
 
-" Configure snippets commands.
-let g:UltiSnipsSnippetDirectories = [g:snippets_dir]
-let g:UltiSnipsSnippetsDir = g:snippets_dir
-let g:UltiSnipsEditSplit="vertical"
-
-let g:julia_indent_align_brackets = 0
-
-let g:python3_host_prog = expand("~/code/nvim-venv/bin/python")
+let g:julia_indent_align_brackets = 0 " ????
 
 " Hightlight text on yank.
 au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
@@ -109,9 +101,7 @@ local telescope_builtin = require 'telescope.builtin'
 local configs = require 'lspconfig.configs'
 local util = require 'lspconfig.util'
 local cmp = require 'cmp'
-
-local cmp_ultisnips = require 'cmp_nvim_ultisnips'
-local cmp_ultisnips_mappings = require'cmp_nvim_ultisnips.mappings'
+local snippy = require 'snippy'
 
 require('leap').set_default_keymaps()
 
@@ -156,12 +146,11 @@ configs.julia_lsp = {
 }
 
 -- Completion engine setup.
-cmp_ultisnips.setup {}
 cmp.setup({
   snippet = {
     expand = function(args)
-      vim.fn["UltiSnips#Anon"](args.body)
-    end,
+      snippy.expand_snippet(args.body)
+    end
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-Space>'] = cmp.mapping.complete(),
@@ -171,14 +160,14 @@ cmp.setup({
     },
     ['<C-s>'] = cmp.mapping(
       function(fallback)
-        cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+        snippy.expand_or_advance(fallback)
       end
     ),
   }),
   sources = {
     {name = "latex_symbols"},
     {name = "nvim_lsp"},
-    {name = "ultisnips"},
+    {name = "snippy"},
   },
 })
 -- {name = "buffer"},

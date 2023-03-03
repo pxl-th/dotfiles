@@ -1,0 +1,48 @@
+snippet com
+    """
+    ${1}
+    """
+
+snippet fun
+    function ${1}()
+
+    end
+
+snippet funt
+    function ${1}(
+        ${2}
+    ) where {
+        ${3}
+    }
+        ${4}
+    end
+
+snippet inc
+    include("${1}.jl")
+
+snippet @ts
+    @testset "${1}" begin
+
+    end
+
+snippet struct
+    struct ${1}
+
+    end
+
+snippet for
+    for ${1} in ${2}
+
+    end
+
+snippet if
+    if ${1}
+
+    end
+
+snippet ifelse
+    if ${1}
+
+    else
+
+    end
