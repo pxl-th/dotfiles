@@ -1,4 +1,4 @@
-set runtimepath+=~/vimfiles,~/vimfiles/after
+set runtimepath+=~/vimfiles
 set packpath+=~/vimfiles
 
 set backup
