@@ -50,6 +50,7 @@ set fileencoding=utf-8
 set encoding=utf-8
 set updatetime=250
 set autochdir
+set clipboard+=unnamedplus
 
 set colorcolumn=80
 set cursorline
@@ -216,10 +217,6 @@ EOF
 
 " Reset search highlight
 nnoremap <F4> :noh<CR>
-
-" Copy & Paste to system clipboard. Need xclip to be installed.
-vnoremap <C-c> :w !xclip -sel c<CR><CR>
-noremap <S-C-v> :r !xsel -b<CR><CR>
 
 " Next/prev tab
 nnoremap <C-Tab> gt
