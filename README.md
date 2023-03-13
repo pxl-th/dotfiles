@@ -6,6 +6,9 @@
 ```
 sudo apt install build-essential xclip fd-find ripgrep fzf
 ```
+
+On Wayland use `wl-clipboard` instead of `xclip`.
+
 2. Create `~/vimfiles` directory and create `backup` and `swap` directories in it.
 3. [Download](https://github.com/junegunn/vim-plug/blob/master/plug.vim)
 plugin manager and save it in `~/vimfiles/autoload` directory.
