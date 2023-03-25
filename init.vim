@@ -179,8 +179,6 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local lsp = require'lspconfig'
 lsp.julia_lsp.setup{on_attach=custom_attach, capabilities=capabilities}
-lsp.tsserver.setup{on_attach=custom_attach, capabilities=capabilities}
-lsp.pylsp.setup{on_attach=custom_attach, capabilities=capabilities}
 
 require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
 telescope.setup{
