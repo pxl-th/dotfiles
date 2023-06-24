@@ -27,6 +27,7 @@ Plug 'kdheepak/cmp-latex-symbols'
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 Plug 'ggandor/leap.nvim'
+Plug 'shortcuts/no-neck-pain.nvim', { 'tag': '*' }
 
 " Snippets.
 Plug 'dcampos/nvim-snippy'
@@ -169,9 +170,9 @@ cmp.setup({
     {name = "latex_symbols"},
     {name = "nvim_lsp"},
     {name = "snippy"},
+    {name = "buffer"},
   },
 })
--- {name = "buffer"},
 
 -- Communicate support for capabilities to LSP servers.
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -215,6 +216,7 @@ EOF
 
 " Reset search highlight
 nnoremap <F4> :noh<CR>
+nnoremap <F7> :NoNeckPain<CR>
 
 " Next/prev tab
 nnoremap <C-Tab> gt
