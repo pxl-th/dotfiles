@@ -43,7 +43,7 @@ Plug 'kvrohit/mellow.nvim'
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 call plug#end()
 
-set background=light
+set background=dark
 colorscheme mellow
 
 set completeopt=menuone,noinsert,noselect
@@ -133,19 +133,19 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 )
 
 -- Julia custom LSP config.
-configs.julia_lsp = {
-  default_config = {
-    cmd = {
-      "julia", "--startup-file=no", "--history-file=no", "-e", [[
-        using LanguageServer, LanguageServer.SymbolServer; runserver()
-      ]]
-    },
-    filetypes = {'julia'},
-    root_dir = function(fname)
-      return util.find_git_ancestor(fname) or vim.loop.os_homedir()
-    end,
-  },
-}
+-- configs.julia_lsp = {
+--   default_config = {
+--     cmd = {
+--       "julia", "--startup-file=no", "--history-file=no", "-e", [[
+--         using LanguageServer, LanguageServer.SymbolServer; runserver()
+--       ]]
+--     },
+--     filetypes = {'julia'},
+--     root_dir = function(fname)
+--       return util.find_git_ancestor(fname) or vim.loop.os_homedir()
+--     end,
+--   },
+-- }
 
 -- Completion engine setup.
 cmp.setup({
@@ -168,7 +168,7 @@ cmp.setup({
   }),
   sources = {
     {name = "latex_symbols"},
-    {name = "nvim_lsp"},
+    --{name = "nvim_lsp"},
     {name = "snippy"},
     {name = "buffer"},
   },
@@ -178,14 +178,23 @@ cmp.setup({
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local lsp = require'lspconfig'
-lsp.julia_lsp.setup{on_attach=custom_attach, capabilities=capabilities}
+-- local lsp = require'lspconfig'
+-- lsp.julia_lsp.setup{on_attach=custom_attach, capabilities=capabilities}
 
 require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
+
+local actions = require "telescope.actions"
+local fb_actions = require "telescope".extensions.file_browser.actions
+
 telescope.setup{
   extensions = {
     file_browser = {
       disable_devicons = true,
+      mappings = {
+        i = {
+          ["<C-t>"] = actions.select_tab
+        },
+      },
     },
   }
 }
@@ -217,13 +226,5 @@ EOF
 " Reset search highlight
 nnoremap <F4> :noh<CR>
 nnoremap <F7> :NoNeckPain<CR>
-
-" Next/prev tab
-nnoremap <C-Tab> gt
-nnoremap <C-S-Tab> gT
-
-" Fold/unfold.
-nnoremap <space> za
-vnoremap <space> zf
 
 command! FixWhitespace :%s/\s\+$//e " Remove trailing whitespaces
