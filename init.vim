@@ -38,13 +38,15 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'itchyny/lightline.vim'
 
-Plug 'kvrohit/mellow.nvim'
+" Plug 'kvrohit/mellow.nvim'
+Plug 'lewpoly/sherbet.nvim'
 
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 call plug#end()
 
 set background=dark
-colorscheme mellow
+" colorscheme mellow
+colorscheme sherbet
 
 set completeopt=menuone,noinsert,noselect
 set fileencoding=utf-8
@@ -92,7 +94,7 @@ set smartindent
 set incsearch
 set hlsearch
 
-let g:julia_indent_align_brackets = 0 " ????
+let g:julia_indent_align_brackets = 0
 
 " Hightlight text on yank.
 au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
