@@ -26,7 +26,6 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'kdheepak/cmp-latex-symbols'
 Plug 'lukas-reineke/indent-blankline.nvim'
 
-Plug 'ggandor/leap.nvim'
 Plug 'shortcuts/no-neck-pain.nvim', { 'tag': '*' }
 
 " Snippets.
@@ -107,8 +106,6 @@ local util = require 'lspconfig.util'
 local cmp = require 'cmp'
 local snippy = require 'snippy'
 
-require('leap').set_default_keymaps()
-
 -- LSP: Custom attach function with defined mappings.
 local custom_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -170,7 +167,7 @@ cmp.setup({
   }),
   sources = {
     {name = "latex_symbols"},
-    --{name = "nvim_lsp"},
+    {name = "nvim_lsp"},
     {name = "snippy"},
     {name = "buffer"},
   },
@@ -180,8 +177,9 @@ cmp.setup({
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
--- local lsp = require'lspconfig'
+local lsp = require'lspconfig'
 -- lsp.julia_lsp.setup{on_attach=custom_attach, capabilities=capabilities}
+lsp.pyright.setup{on_attach=custom_attach, capabilities=capabilities}
 
 require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
 
