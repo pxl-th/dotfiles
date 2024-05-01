@@ -106,6 +106,9 @@ local util = require 'lspconfig.util'
 local cmp = require 'cmp'
 local snippy = require 'snippy'
 
+-- Show indentation lines.
+require("ibl").setup()
+
 -- LSP: Custom attach function with defined mappings.
 local custom_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -157,7 +160,7 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
+      select = false,
     },
     ['<C-s>'] = cmp.mapping(
       function(fallback)
@@ -178,6 +181,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local lsp = require'lspconfig'
+
 -- lsp.julia_lsp.setup{on_attach=custom_attach, capabilities=capabilities}
 lsp.pyright.setup{on_attach=custom_attach, capabilities=capabilities}
 
