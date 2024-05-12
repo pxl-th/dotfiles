@@ -37,7 +37,7 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
+    xterm-color|*-256color|xterm-kitty) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -117,12 +117,8 @@ if ! shopt -oq posix; then
 fi
 
 alias upd='sudo apt update && sudo apt list --upgradable'
-alias upg='sudo apt upgrade'
-alias ls='ls -Ghal --color'
+alias upg='sudo aptitude upgrade'
 alias jl='julia --threads=auto --project=.'
-alias jls='julia --threads=auto --project=. --sysimage=JuliaSysimage.so'
 alias jlt='julia --threads=auto'
-alias sshamd='kitty +kitten ssh -i .ssh/amd_mit asmirnov@100.110.24.93'
 
-export PATH="/home/pxl-th/.local/bin:$PATH"
-export PATH="/home/pxl-th/bin/julia-1.8.0-rc4/bin:$PATH"
+PATH="$HOME/bin/julia-1.10.3/bin:$PATH"
