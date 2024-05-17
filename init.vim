@@ -24,7 +24,7 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'kdheepak/cmp-latex-symbols'
-Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'lukas-reineke/indent-blankline.nvim', {'tag': 'v3.5.4'} " newer versions require nvim 0.10
 
 Plug 'shortcuts/no-neck-pain.nvim', { 'tag': '*' }
 
@@ -37,15 +37,13 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'itchyny/lightline.vim'
 
-" Plug 'kvrohit/mellow.nvim'
-Plug 'lewpoly/sherbet.nvim'
+Plug 'kvrohit/mellow.nvim'
 
 Plug 'JuliaEditorSupport/julia-vim', {'for': 'julia'}
 call plug#end()
 
 set background=dark
-" colorscheme mellow
-colorscheme sherbet
+colorscheme mellow
 
 set completeopt=menuone,noinsert,noselect
 set fileencoding=utf-8
