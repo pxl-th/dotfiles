@@ -9,7 +9,7 @@ let g:pluggins_dir = expand("~/vimfiles/pluggins")
 call plug#begin(g:pluggins_dir)
 
 " --Neovim specifics--
-Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/plenary.nvim', {'commit': '08e301982b9a057110ede7a735dd1b5285eb341f'}
 Plug 'lewis6991/gitsigns.nvim'
 
 " Telescope & Treesitter
