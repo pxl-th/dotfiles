@@ -9,7 +9,6 @@ let g:pluggins_dir = expand("~/vimfiles/pluggins")
 call plug#begin(g:pluggins_dir)
 
 " --Neovim specifics--
-" Plug 'nvim-lua/plenary.nvim', {'commit': '08e301982b9a057110ede7a735dd1b5285eb341f'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
@@ -24,8 +23,9 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-path'
+
 Plug 'kdheepak/cmp-latex-symbols'
-" Plug 'lukas-reineke/indent-blankline.nvim', {'tag': 'v3.5.4'} " newer versions require nvim 0.10
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 Plug 'shortcuts/no-neck-pain.nvim', { 'tag': '*' }
@@ -173,6 +173,7 @@ cmp.setup({
     {name = "nvim_lsp"},
     {name = "snippy"},
     {name = "buffer"},
+    {name = "path"},
   },
 })
 
