@@ -101,53 +101,11 @@ au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, o
 lua << EOF
 local telescope = require 'telescope'
 local telescope_builtin = require 'telescope.builtin'
-local configs = require 'lspconfig.configs'
-local util = require 'lspconfig.util'
 local cmp = require 'cmp'
 local snippy = require 'snippy'
 
 -- Show indentation lines.
 require("ibl").setup()
-
--- LSP: Custom attach function with defined mappings.
-local custom_attach = function(client, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  vim.keymap.set('n', '<leader><F2>', vim.diagnostic.goto_prev, {buffer = true})
-  vim.keymap.set('n', '<F2>', vim.diagnostic.goto_next, {buffer = true})
-
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, {buffer = true})
-  vim.keymap.set('n', '<F6>', vim.lsp.buf.rename, {buffer = true})
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer = true})
-  vim.keymap.set('n', '<leader>rf', vim.lsp.buf.references, {buffer = true})
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-
-  vim.keymap.set('n', '<leader>f', telescope_builtin.lsp_dynamic_workspace_symbols, {buffer = true})
-end
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = false,
-    virtual_text = false,
-    signs = true,
-    update_in_insert = false,
-  }
-)
-
--- Julia custom LSP config.
--- configs.julia_lsp = {
---   default_config = {
---     cmd = {
---       "julia", "--startup-file=no", "--history-file=no", "-e", [[
---         using LanguageServer, LanguageServer.SymbolServer; runserver()
---       ]]
---     },
---     filetypes = {'julia'},
---     root_dir = function(fname)
---       return util.find_git_ancestor(fname) or vim.loop.os_homedir()
---     end,
---   },
--- }
 
 -- Completion engine setup.
 cmp.setup({
@@ -162,35 +120,22 @@ cmp.setup({
       behavior = cmp.ConfirmBehavior.Insert,
       select = false,
     },
-    ['<C-s>'] = cmp.mapping(
-      function(fallback)
-        snippy.expand_or_advance(fallback)
-      end
-    ),
   }),
   sources = {
     {name = "latex_symbols"},
     {name = "nvim_lsp"},
-    {name = "snippy"},
     {name = "buffer"},
     {name = "path"},
   },
 })
 
--- Communicate support for capabilities to LSP servers.
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-local lsp = require'lspconfig'
-
--- lsp.julia_lsp.setup{on_attach=custom_attach, capabilities=capabilities}
-lsp.pyright.setup{on_attach=custom_attach, capabilities=capabilities}
+-- Enable LSP servers (nvim 0.11+).
+vim.lsp.enable('pyright')
+vim.o.winborder = 'rounded'
 
 require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
 
 local actions = require "telescope.actions"
-local fb_actions = require "telescope".extensions.file_browser.actions
-
 telescope.setup{
   extensions = {
     file_browser = {
@@ -221,6 +166,14 @@ vim.g.lightline = {
 vim.keymap.set("n", "<leader>fb", telescope.extensions.file_browser.file_browser)
 vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files)
 vim.keymap.set("n", "<leader>fg", telescope_builtin.live_grep)
+
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+vim.keymap.set('n', '<F2>', vim.diagnostic.goto_prev, {buffer = true})
+vim.keymap.set('n', '<F3>', vim.diagnostic.goto_next, {buffer = true})
+vim.keymap.set('n', 'gK', function()
+  local new_config = not vim.diagnostic.config().virtual_lines
+  vim.diagnostic.config({ virtual_lines = new_config })
+end, { desc = 'Toggle diagnostic virtual_lines' })
 
 -- Use treesitter for folding.
 vim.opt.foldmethod = "expr"
