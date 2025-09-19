@@ -124,6 +124,7 @@ cmp.setup({
   sources = {
     {name = "latex_symbols"},
     {name = "nvim_lsp"},
+    {name = "snippy"},
     {name = "buffer"},
     {name = "path"},
   },
