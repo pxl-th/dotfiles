@@ -120,6 +120,11 @@ cmp.setup({
       behavior = cmp.ConfirmBehavior.Insert,
       select = false,
     },
+    ['<C-e>'] = cmp.mapping(
+      function(fallback)
+        snippy.expand_or_advance(fallback)
+      end
+    ),
   }),
   sources = {
     {name = "latex_symbols"},
@@ -169,8 +174,8 @@ vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files)
 vim.keymap.set("n", "<leader>fg", telescope_builtin.live_grep)
 
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
-vim.keymap.set('n', '<F2>', vim.diagnostic.goto_prev, {buffer = true})
-vim.keymap.set('n', '<F3>', vim.diagnostic.goto_next, {buffer = true})
+vim.keymap.set('n', '<F2>', vim.diagnostic.goto_prev)
+vim.keymap.set('n', '<F3>', vim.diagnostic.goto_next)
 vim.keymap.set('n', 'gK', function()
   local new_config = not vim.diagnostic.config().virtual_lines
   vim.diagnostic.config({ virtual_lines = new_config })
