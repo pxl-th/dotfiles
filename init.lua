@@ -1,6 +1,8 @@
 vim.opt.background = "dark"
 vim.opt.autochdir = true
 vim.opt.swapfile = false
+-- How fast (in ms) to trigger background tasks: diagnostics, saving to swap, etc.
+vim.opt.updatetime = 250
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -18,11 +20,14 @@ vim.opt.listchars = { tab = ">-", trail = "~", extends = ">", precedes = "<" }
 
 -- Sync clipboard between OS & nvim.
 vim.opt.clipboard = "unnamedplus"
+-- Show completion menu even with 1 match, do not auto-insert, do not auto-select 1st item.
+vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 
+vim.opt.wildmenu = true
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smarttab = true
