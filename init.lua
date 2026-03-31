@@ -44,6 +44,12 @@ vim.pack.add({
     "https://github.com/nvim-telescope/telescope-file-browser.nvim",
     "https://github.com/nvim-treesitter/nvim-treesitter",
 }, { confirm = false })
+
+
+require "nvim-treesitter".setup()
+require "nvim-treesitter".install { "c", "cpp", "cmake", "python", "julia", "javascript", "cuda" }
+require "nvim-treesitter.config".setup{ highlight = { enable = true } }
+
 local telescope = require 'telescope'
 local telescope_builtin = require 'telescope.builtin'
 local actions = require "telescope.actions"
