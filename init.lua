@@ -3,6 +3,7 @@ vim.opt.autochdir = true
 vim.opt.swapfile = false
 -- How fast (in ms) to trigger background tasks: diagnostics, saving to swap, etc.
 vim.opt.updatetime = 250
+vim.opt.statusline = "%F"
 
 vim.opt.number = true
 vim.opt.relativenumber = true
