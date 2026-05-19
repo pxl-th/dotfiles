@@ -124,6 +124,19 @@ vim.pack.add({"https://github.com/kdheepak/cmp-latex-symbols"}, { confirm = fals
 vim.pack.add({"https://github.com/lukas-reineke/indent-blankline.nvim"}, { confirm = false })
 require "ibl".setup()
 
+-- Status line with git integration.
+vim.pack.add({'https://github.com/nvim-lualine/lualine.nvim'}, { confirm = false })
+require('lualine').setup {
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+}
+
 -- Clear search highlights with Esc.
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
