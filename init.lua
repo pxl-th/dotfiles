@@ -63,6 +63,7 @@ telescope.setup{
           ["<C-t>"] = actions.select_tab
         },
       },
+      hidden = true,
     },
   }
 }
